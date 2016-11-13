@@ -49,14 +49,27 @@ GameObj = {
   }]
 }
 
+## KeyWords
+These will be the keywords we search for
+
 ## User Objects
 We need some way of having the users log on. Maybe chrome has a unique id for each user.
 User = {
-  id: String,
-  userStorage: [GameObj],
-  permStorage: [GameObj],
+  name: String,
   health: Number,
   packSize: Number,
+  packStorage: [{
+    name: GameObj.name,
+    value: GameObj.value,
+    damage: GameObj.damage,
+    combinations: GameObj.combinations
+  }],
+  homeStorage: [{
+    name: GameObj.name,
+    value: GameObj.value,
+    damage: GameObj.damage,
+    combinations: GameObj.combinations
+  }],
   acheivements: {
     numItemsFound: Number,
     numPagesVisited: Number
