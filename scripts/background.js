@@ -1,3 +1,15 @@
+// Assumptions of formats
+//    Messages returned = {
+//      "response": <"Success", "Error">,
+//      "message": String
+//    }
+//    gather = {
+//      "action": "gather",
+//      "word": String,
+//    }
+// TODO finish these notes 
+
+
 console.log("Background");
 
 // Make user accessible
@@ -23,6 +35,8 @@ chrome.storage.sync.get(null, function(obj) {
     user.acheivements = {};
     user.acheivements.pages = 0;
     user.numCombines = 0;
+    user.numPulls = 0;
+    user.numStores = 0;
 
     chrome.storage.sync.set(user, function() { console.log("Saved user"); });
   }
@@ -37,6 +51,8 @@ chrome.storage.sync.get(null, function(obj) {
     user.homeStorage = obj.homeStorage;
     user.acheivements = obj.acheivements;
     user.numCombines = obj.numCombines;
+    user.numPulls = obj.numPulls;
+    user.numStores = obj.numStores;
   }
 });
 
@@ -73,6 +89,7 @@ $.getJSON("keywords.json", function(data) {
 chrome.runtime.onConnect.addListener(function(port) {
   console.assert(port.name == "scraper");
   port.onMessage.addListener(function(msg) {
+    // May want to compare the lower cased versions of these
     var returnMessage = {};
     if (msg.action == "gather") {
       returnMessage = gather(msg.word);
@@ -81,17 +98,17 @@ chrome.runtime.onConnect.addListener(function(port) {
       returnMessage = fight(msg.data);
     }
     else if (msg.action == "heal") {
-
+      returnMessage = heal(msg.data);
     }
     else if (msg.action == "store") {
-      // More difficult since need gui implementation
+      returnMessage = store();
     }
     else if (msg.action == "combine") {
       returnMessage = combine();
     }
     else {
       returnMessage.response = "Error";
-      returnMessage.message = "Unknown error occurred";
+      returnMessage.message = "Could not find corresponding action";
     }
 
     port.postMessage(returnMessage);
@@ -142,7 +159,6 @@ function gather(resource) {
 // Fight something
 function fight(data) {
   var returnMessage = {};
-  returnMessage.response = "Success";
 
   var userAttack = 0;
   for (item in user.packStorage) {
@@ -156,9 +172,11 @@ function fight(data) {
 
   // if (Math.ceil(user.health / data.attack) >= Math.ceil(data.health / userAttack)) {
   if (user.health > 0) {
+    returnMessage.response = "Success";
     returnMessage.message = "Successfully vanquished the foe!"
   }
   else {
+    returnMessage.response = "Error";
     returnMessage.message = "OH NO! YOU DIED!!!"
 
     // Reset the health value
@@ -169,15 +187,62 @@ function fight(data) {
 
   // Probs don't need to pass this whole thing...
   chrome.storage.sync.set(user, function() { console.log("Saved user"); });
+  return returnMessage;
+}
+
+
+
+function heal(data) {
+  var returnMessage = {};
+  
+  if (user.health < user.maxHealth) {
+    returnMessage.response = "Success";
+    returnMessage.message = "Healed by " + data.health + " health points";
+
+    user.health += data.health;
+    // Probs don't need to pass this whole thing...
+    chrome.storage.sync.set(user, function() { console.log("Saved user"); });
+  }
+  else {
+    returnMessage.response = "Error";
+    returnMessage.message = "Couldn't heal you any more. Already at max health!"
+  }
 
   return returnMessage;
 }
 
-// Combine two items
-// This will have to be done through the popup...
+
+
+// ALL OF THE FOLLOWING METHODS MUST BE DONE THROUGH THE POPUP
 function combine() {
+  var returnMessage = {};
+  returnMessage.response = "Success";
+  returnMessage.message = "You got another combination token, see popout to use."
+
   // Simply increment the number of combines we can use
   user.numCombines = user.numCombines + 1;
+
+  // Probs don't need to pass this whole thing...
+  chrome.storage.sync.set(user, function() { console.log("Saved user"); });
+}
+function store() {
+  var returnMessage = {};
+  returnMessage.response = "Success";
+  returnMessage.message = "You got another stashing token, see popout to use."
+
+  // Simply increment the number of combines we can use
+  user.numStores = user.numStores + 1;
+
+  // Probs don't need to pass this whole thing...
+  chrome.storage.sync.set(user, function() { console.log("Saved user"); });
+}
+function pull() {
+  var returnMessage = {};
+  returnMessage.response = "Success";
+  returnMessage.message = "You got another packing token, see popout to use."
+
+  // Simply increment the number of combines we can use
+  user.numPulls = user.numPulls + 1;
 
   // Probs don't need to pass this whole thing...
   chrome.storage.sync.set(user, function() { console.log("Saved user"); });
