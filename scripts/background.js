@@ -37,6 +37,7 @@ chrome.storage.sync.get(null, function(obj) {
     user.numCombines = 0;
     user.numPulls = 0;
     user.numStores = 0;
+    user.xp = 0;
 
     chrome.storage.sync.set(user, function() { console.log("Saved user"); });
   }
@@ -53,6 +54,7 @@ chrome.storage.sync.get(null, function(obj) {
     user.numCombines = obj.numCombines;
     user.numPulls = obj.numPulls;
     user.numStores = obj.numStores;
+    user.xp = obj.xp;
   }
 });
 
@@ -142,6 +144,7 @@ function gather(resource) {
     else {
       returnMessage.response = "Success";
       returnMessage.message = "Added " + resource + " to your pack";
+      user.xp = user.xp + newObj.value * 10;
       user.packStorage.push(newObj);
     }
 
@@ -174,7 +177,8 @@ function fight(data) {
   // if (Math.ceil(user.health / data.attack) >= Math.ceil(data.health / userAttack)) {
   if (user.health > 0) {
     returnMessage.response = "Success";
-    returnMessage.message = "Successfully vanquished the foe!"
+    returnMessage.message = "Successfully vanquished the foe!";
+    user.xp = uxer.xp + (Math.ceil(data.health * data.attack));
   }
   else {
     returnMessage.response = "Error";

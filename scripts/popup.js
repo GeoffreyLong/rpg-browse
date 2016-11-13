@@ -1,6 +1,7 @@
 // TODO add populations for 
 //      num page visits, num combos, num items gathered, num fights won
 //      num fights lost, num items dropped
+// TODO Do I have to do the digests since the functions aren't on the scope?
 
 var app = angular.module("appGui", ['ngMaterial']);
 app.config(['$compileProvider', function ($compileProvider) {
@@ -16,6 +17,8 @@ app.controller("myCtrl", function($scope) {
 
   var gameObjects = [];
   getGameObjs();
+
+  incrementXP(50);
 
   // Should probably encapsulate this in a service?
   // Actually, this html is being reloaded each time...
@@ -43,10 +46,6 @@ app.controller("myCtrl", function($scope) {
       $scope.user.health = obj["health"];
       $scope.$digest();
     });
-    chrome.storage.sync.get("xp", function(obj) {
-      $scope.user.xp = obj["xp"];
-      $scope.$digest();
-    });
     chrome.storage.sync.get("numStores", function(obj) {
       $scope.user.numStores = obj["numStores"];
       $scope.$digest();
@@ -64,6 +63,18 @@ app.controller("myCtrl", function($scope) {
   function getGameObjs() {
     chrome.storage.sync.get("GameObjects", function(obj) {
       gameObjects = obj["GameObjects"];
+    });
+  }
+
+  function incrementXP(increase) {
+    chrome.storage.sync.get("xp", function(obj) {
+      $scope.user.xp = obj["xp"];
+      // Will increment whenever this fn is called
+      // Will want to pull this out of this fn
+      $scope.user.xp = $scope.user.xp + 50;
+      if (!$scope.user.xp) $scope.user.xp = 50;
+      chrome.storage.sync.set({"xp": $scope.user.xp});
+      $scope.$digest();
     });
   }
 
