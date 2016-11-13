@@ -13,6 +13,9 @@
         overflow: hidden;
         max-width: 400px;
       }
+      .item {
+        margin: 10px
+      }
     </style>
 
     <!--
@@ -22,16 +25,25 @@
       - [1]: https://developer.chrome.com/extensions/contentSecurityPolicy
      -->
 
+    <link rel="stylesheet" href="angular-material.min.css">
     <script src="scripts/angular.min.js"></script>
+    <script src="scripts/angular-animate.min.js"></script>
+    <script src="scripts/angular-aria.min.js"></script>
+    <script src="scripts/angular-material.min.js"></script>
+
     <script src="scripts/popup.js"></script>
   </head>
   <body>
     <div ng-app="appGui" ng-controller="myCtrl">
-      <div ng-repeat="item in items">
-        {{item.name}}
+      <div ng-repeat="row in chunkedItems" layout="row" layout-align="center end">
+        <div ng-repeat="item in row" class="item">
+          <div layout="column">
+            <div> {{item.name}} </div>
+            <img src={{item.icon}} alt="icon"> </img>
+          </div>
+        </div>
       </div>
     </div>
-</div>
   </body>
 </html>
 

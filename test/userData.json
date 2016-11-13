@@ -4,6 +4,7 @@
   "packSize": 20,
   "packStorage": [{
     "name": "Sword",
+    "icon": "img/sword.png",
     "value": 5,
     "damage": 5,
     "combinations": [{
@@ -12,6 +13,7 @@
     }]
   }, {
     "name": "Gold",
+    "icon": "img/gold.png",
     "value": 1,
     "damage": 0,
     "combinations": [{
@@ -21,8 +23,10 @@
   }],
   "homeStorage": [{
     "name": "Golden Sword",
+    "icon": "img/gold-sword.png",
     "value": 10,
-    "damage": 10
+    "damage": 10,
+    "combinations": []
   }],
   "acheivements": {}
 }
