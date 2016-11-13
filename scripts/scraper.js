@@ -5,29 +5,6 @@
 //      don't want to run before full load
 //      Might also be able to do this via the chrome API 
 console.log("Scraper Running");
-<<<<<<< HEAD
-var keywords = ["sword", "gold", "yellow", "blue", "green", "china", "civil", "state"];
-var itemStorage = [ ];
-
-// This will match the keywords with the page text
-// Will also create the necessary buttons
-(function() {
-  function runScraper() {
-    console.log($('body'));
-     for(var i = 0; i < keywords.length; i++){
-     $("body:not([href]):not(:image)").html($("body:not([href]):not(:image)").html().replace(new RegExp(keywords[i], "ig"),"<button onclick = "buttonInfo()"> " + keywords[i] + " </button>"));
-     console.log("Ran it " + i);
-  }
-
-  }
-
-
-  function getButtonInfo(){
-    itemStorage.push($('button.text').text());  
-
-    
-  }
-=======
 var keywords = [];
 var itemStorage = [];
 
@@ -39,10 +16,6 @@ chrome.storage.sync.get("keywords", function(obj) {
   runScraper();
 })
 
->>>>>>> ecce9c786cdd08c0a4711fa4af3f662c7fb8d0fa
-
-  function createStorageButton()
-  {
 
 // Open port for communications
 var port = chrome.runtime.connect({name: "scraper"});
@@ -60,7 +33,7 @@ port.onMessage.addListener(function(msg) {
 
 
 // Run scraper
-// This will match the keywords with the page textx
+// This will match the keywords with the page text
 // Will also create the necessary buttons
 function runScraper() {
   console.log($('body'));
@@ -71,15 +44,23 @@ function runScraper() {
   console.log(elms);
 
   for(var i = 0; i < keywords.length; i++){
-    $("body:not([href]):not(:image)").html($("body:not([href]):not(:image)").html().replace(new RegExp(keywords[i].word, "ig"),"<button class='dynButton' id='"+i+"'> " + keywords[i].word + " </button>"));
+    $("body:not([href]):not(:image):not(style)").html($("body:not([href]):not(:image):not(style)").html().replace(new RegExp(keywords[i].word, "ig"),"<button class='dynButton' id='"+i+"'> " + keywords[i].word + " </button>"));
     console.log("Ran it " + i);
+
   }
+
+
 
   $(".dynButton").click(handler);
 }
+
 
 // The button data will be the keyword object that is matched
 function handler(){
   var actionIndex = $(this).attr('id');
   port.postMessage(keywords[actionIndex]);
 }
+
+
+
+
