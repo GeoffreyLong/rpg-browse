@@ -44,7 +44,7 @@ function runScraper() {
   console.log(elms);
 
   for(var i = 0; i < keywords.length; i++){
-    $("body:not([href]):not(:image):not(style)").html($("body:not([href]):not(:image):not(style)").html().replace(new RegExp(keywords[i].word, "ig"),"<button class='dynButton' id='"+i+"'> " + keywords[i].word + " </button>"));
+    $("body:has(p)").html($("body:has(p)").html().replace(new RegExp(keywords[i].word, "ig"),"<button class='dynButton' id='"+i+"'> " + keywords[i].word + " </button>"));
     console.log("Ran it " + i);
 
   }
