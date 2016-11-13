@@ -8,7 +8,7 @@ console.log("Scraper Running");
 var keywords = ["sword", "gold", "yellow", "blue", "green", "china", "civil", "state"];
 var itemStorage = [ ];
 
-// This will match the keywords with the page textx
+// This will match the keywords with the page text
 // Will also create the necessary buttons
 (function() {
   function runScraper() {
@@ -22,9 +22,13 @@ var itemStorage = [ ];
 
 
   function getButtonInfo(){
-    itemStorage.push($('button.text').text());
-    
+    itemStorage.push($('button.text').text());  
 
+    
+  }
+
+  function createStorageButton()
+  {
 
   }
   function createActionButton() {
