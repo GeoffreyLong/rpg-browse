@@ -1,0 +1,88 @@
+[{
+	"word": "iron",
+	"action": "gather"
+}, {
+	"word": "wood",
+	"action": "gather"
+}, {
+	"word": "gunpowder",
+	"action": "gather"
+}, {
+	"word": "string",
+	"action": "gather"
+}, {
+	"word": "stick",
+	"action": "gather"
+}, {
+	"word": "gem",
+	"action": "gather"
+}, {
+	"word": "stone",
+	"action": "gather"
+}, {
+	"word": "herb",
+	"action": "gather"
+}, {
+	"word": "mushroom",
+	"action": "gather"
+}, {
+	"word": "bottle",
+	"action": "gather"
+}, {
+	"word": "leather",
+	"action": "gather"
+}, {
+	"word": "gold",
+	"action": "gather"
+}, {
+	"word": "trash",
+	"action": "gather"
+}, {
+	"word": "store",
+	"action": "store"
+}, {
+	"word": "stash",
+	"action": "store"
+}, {
+	"word": "stock",
+	"action": "store"
+}, {
+	"word": "deposit",
+	"action": "store"
+}, {
+	"word": "pull",
+	"action": "pull"
+}, {
+	"word": "take",
+	"action": "pull"
+}, {
+	"word": "remove",
+	"action": "pull"
+}, {
+	"word": "transfer",
+	"action": "pull"
+}, {
+	"word": "attack",
+	"action": "attack"
+}, {
+	"word": "combat",
+	"action": "attack"
+}, {
+	"word": "fight",
+	"action": "attack"
+}, {
+	"word": "strike",
+	"action": "attack"
+}, {
+	"word": "drop",
+	"action": "drop"
+}, {
+	"word": "discrad",
+	"action": "drop"
+}, {
+	"word": "toss",
+	"action": "drop"
+}, {
+	"word": "scrap",
+	"action": "drop"
+}]
