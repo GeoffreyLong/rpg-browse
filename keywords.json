@@ -62,22 +62,45 @@
 	"word": "transfer",
 	"action": "pull"
 }, {
-	"word": "attack",
-	"action": "attack"
+	"word": "slime",
+	"action": "attack",
+	"data": {
+		"health": 10,
+		"attack": 5
+	}
 }, {
-	"word": "combat",
-	"action": "attack"
+	"word": "werewolf",
+	"action": "attack",
+	"data": {
+		"health": 30,
+		"attack": 10
+	}
 }, {
-	"word": "fight",
-	"action": "attack"
+	"word": "golem",
+	"action": "attack",
+	"data": {
+		"health": 50,
+		"attack": 20
+	}
 }, {
-	"word": "strike",
-	"action": "attack"
+	"word": "dragon",
+	"action": "attack",
+	"data": {
+		"health": 70,
+		"attack": 30
+	}
+}, {
+	"word": "death",
+	"action": "attack",
+	"data": {
+		"health": 200,
+		"attack": 100
+	}
 }, {
 	"word": "drop",
 	"action": "drop"
 }, {
-	"word": "discrad",
+	"word": "discard",
 	"action": "drop"
 }, {
 	"word": "toss",
@@ -85,4 +108,22 @@
 }, {
 	"word": "scrap",
 	"action": "drop"
+}, {
+	"word": "heal",
+	"action": "heal",
+	"data": {
+		"health": 25
+	}
+}, {
+	"word": "potion",
+	"action": "heal",
+	"data": {
+		"health": 50
+	}
+}, {
+	"word": "elixer",
+	"action": "heal",
+	"data": {
+		"health": 100
+	}
 }]
