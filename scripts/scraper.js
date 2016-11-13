@@ -64,15 +64,22 @@ port.onMessage.addListener(function(msg) {
 // Will also create the necessary buttons
 function runScraper() {
   console.log($('body'));
+  
+  var elms = $('body').find('*:not([href]):not("script")').filter(function() {
+    return ($(this).children().length == 0 && $(this).text().split(/\s+/).length > 10);
+  });
+  console.log(elms);
+
   for(var i = 0; i < keywords.length; i++){
-    $("body:not([href]):not(:image)").html($("body:not([href]):not(:image)").html().replace(new RegExp(keywords[i].word, "ig"),"<button onclick='" + buttonAction(keywords[i]) + "'> " + keywords[i].word + " </button>"));
+    $("body:not([href]):not(:image)").html($("body:not([href]):not(:image)").html().replace(new RegExp(keywords[i].word, "ig"),"<button class='dynButton' id='"+i+"'> " + keywords[i].word + " </button>"));
     console.log("Ran it " + i);
   }
 
+  $(".dynButton").click(handler);
 }
 
-
 // The button data will be the keyword object that is matched
-function buttonAction(buttonData){
-  port.postMessage(buttonData);
+function handler(){
+  var actionIndex = $(this).attr('id');
+  port.postMessage(keywords[actionIndex]);
 }
