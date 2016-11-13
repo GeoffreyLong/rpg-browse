@@ -21,6 +21,18 @@
         border: 2px solid #37FDFC;
         box-shadow: 0 0 10px #37FDFC;
       }
+      .item .stash {
+        border: 2px solid #F3F315;
+        box-shadow: 0 0 10px #F3F315;
+      }
+      .item .pull {
+        border: 2px solid #F3F315;
+        box-shadow: 0 0 10px #F3F315;
+      }
+      .userMetric {
+        padding-right: 10px;
+        padding-left: 10px;
+      }
     </style>
 
     <!--
@@ -40,12 +52,30 @@
   </head>
   <body>
     <div ng-app="appGui" ng-controller="myCtrl">
-      <div ng-repeat="row in chunkedItems" layout="row" layout-align="center end">
-        <div ng-repeat="item in row" class="item">
-          <div layout="column" class={{item.storage}}>
-            <div> {{item.name}} </div>
-            <img src={{item.icon}} alt="icon"> </img>
+      <div layout="column" layout-align="center center"> 
+        <div layout="row" layout-align="center center">
+          <div class="userMetric">
+            Health: {{user.health}}
           </div>
+          <div class="userMetric">
+            XP: {{user.xp || "?"}}
+          </div>
+        </div>
+        <div layout="row" layout-align="center center">
+          <md-button  id="stasher" ng-disabled={{user.numStores == 0 | iif : "true" : "false"}}
+                      ng-click="stash()"> Stash ({{user.numStores || "0"}}) </md-button>
+          <md-button  id="puller" ng-disabled={{user.numPulls == 0 | iif : "true" : "false"}}
+                      ng-click="pull()"> Equip ({{user.numPulls || "0"}}) </md-button>
+          <md-button  ng-disabled={{user.numCombines == 0 | iif : "true" : "false"}}
+                      ng-click="combine()"> Combine ({{user.numCombines || "0"}}) </md-button>
+        </div>
+        <div layout="row">
+        <div ng-repeat="item in items track by $index" class="item" ng-click="itemAction($index, $event)">
+          <div layout="column" class={{item.storage}} layout-align="center center">
+            <div> {{item.name}} </div>
+            <img style="max-width: 64px" src={{item.icon}} alt="icon"> </img>
+          </div>
+        </div>
         </div>
       </div>
     </div>
