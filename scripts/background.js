@@ -16,6 +16,7 @@ chrome.storage.sync.get(null, function(obj) {
     
     // Create a new user
     user.health = 100;
+    user.maxHealth = 100;
     user.packSize = 20;
     user.packStorage = [];
     user.homeStorage = [];
@@ -30,6 +31,7 @@ chrome.storage.sync.get(null, function(obj) {
 
     // Populate the user
     user.health = obj.health;
+    user.maxHealth = obj.maxHealth;
     user.packSize = obj.packSize;
     user.packStorage = obj.packStorage;
     user.homeStorage = obj.homeStorage;
@@ -75,7 +77,7 @@ chrome.runtime.onConnect.addListener(function(port) {
     if (msg.action == "gather") {
       returnMessage = gather(msg.word);
     }
-    else if (msg.action == "fight") {
+    else if (msg.action == "attack") {
       returnMessage = fight(msg.data);
     }
     else if (msg.action == "heal") {
@@ -138,10 +140,37 @@ function gather(resource) {
 
 
 // Fight something
-function fight() {
+function fight(data) {
+  var returnMessage = {};
+  returnMessage.response = "Success";
 
+  var userAttack = 0;
+  for (item in user.packStorage) {
+    var attack = user.packStorage[item];
 
+    // temporary method... not very good
+    userAttack += attack;
+  }
 
+  user.health = user.health - (Math.ceil(data.health / userAttack - 1) * data.attack);
+
+  // if (Math.ceil(user.health / data.attack) >= Math.ceil(data.health / userAttack)) {
+  if (user.health > 0) {
+    returnMessage.message = "Successfully vanquished the foe!"
+  }
+  else {
+    returnMessage.message = "OH NO! YOU DIED!!!"
+
+    // Reset the health value
+    // Reset the pack storage
+    user.health = user.maxHealth;
+    user.packStorage = [];
+  }
+
+  // Probs don't need to pass this whole thing...
+  chrome.storage.sync.set(user, function() { console.log("Saved user"); });
+
+  return returnMessage;
 }
 
 // Combine two items

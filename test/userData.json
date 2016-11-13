@@ -2,6 +2,7 @@
   "name": "Test User",
   "health": 100,
   "packSize": 20,
+  "maxHealth": 100,
   "packStorage": [{
     "name": "Sword",
     "icon": "img/sword.png",
