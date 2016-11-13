@@ -29,6 +29,14 @@
         border: 2px solid #F3F315;
         box-shadow: 0 0 10px #F3F315;
       }
+      .item .combine {
+        border: 2px solid #F3F315;
+        box-shadow: 0 0 10px #F3F315;
+      }
+      .item .inCombo {
+        border: 2px solid #FD5F00;
+        box-shadow: 0 0 10px #FD5F00;
+      }
       .userMetric {
         padding-right: 10px;
         padding-left: 10px;
@@ -62,11 +70,12 @@
           </div>
         </div>
         <div layout="row" layout-align="center center">
+          <!-- TODO The ng-disabled isn't working right -->
           <md-button  id="stasher" ng-disabled={{user.numStores == 0 | iif : "true" : "false"}}
                       ng-click="stash()"> Stash ({{user.numStores || "0"}}) </md-button>
           <md-button  id="puller" ng-disabled={{user.numPulls == 0 | iif : "true" : "false"}}
                       ng-click="pull()"> Equip ({{user.numPulls || "0"}}) </md-button>
-          <md-button  ng-disabled={{user.numCombines == 0 | iif : "true" : "false"}}
+          <md-button  id="combiner" ng-disabled={{user.numCombines == 0 | iif : "true" : "false"}}
                       ng-click="combine()"> Combine ({{user.numCombines || "0"}}) </md-button>
         </div>
         <div layout="row">

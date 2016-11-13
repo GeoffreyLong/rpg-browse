@@ -27,7 +27,7 @@
   }],
   "homeStorage": [{
     "name": "Golden Sword",
-    "icon": "img/gold-sword.png",
+    "icon": "img/golden_sword.png",
     "value": 10,
     "damage": 10,
     "combinations": []

@@ -62,6 +62,9 @@ $.getJSON("GameObjects.json", function(data) {
   if (data.length > 0) {
     alert("Found game objects");
     gameObjs = data;
+    var gameObjSend = {};
+    gameObjSend["GameObjects"] = data;
+    chrome.storage.sync.set(gameObjSend, function() { console.log("Saved GameObjects"); });
   }
   else {
     alert("Couldn't read game objects");
@@ -81,8 +84,6 @@ $.getJSON("keywords.json", function(data) {
     alert("Couldn't read keywords");
   }
 });
-
-
 
 
 // Connect the listener

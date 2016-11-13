@@ -1,3 +1,7 @@
+// TODO add populations for 
+//      num page visits, num combos, num items gathered, num fights won
+//      num fights lost, num items dropped
+
 var app = angular.module("appGui", ['ngMaterial']);
 app.config(['$compileProvider', function ($compileProvider) {
     $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|local|data|chrome-extension):/);
@@ -7,8 +11,12 @@ app.controller("myCtrl", function($scope) {
   $scope.items = [];
   $scope.chunkedItems = [];
   $scope.user = {};
+  $scope.comboHelper = -1;
   getItems();
-  
+
+  var gameObjects = [];
+  getGameObjs();
+
   // Should probably encapsulate this in a service?
   // Actually, this html is being reloaded each time...
   // This just seems inefficient to do it this way though
@@ -53,6 +61,12 @@ app.controller("myCtrl", function($scope) {
     });
   }
 
+  function getGameObjs() {
+    chrome.storage.sync.get("GameObjects", function(obj) {
+      gameObjects = obj["GameObjects"];
+    });
+  }
+
   /*
   function chunk(arr) {
     var size = 5;
@@ -78,16 +92,28 @@ app.controller("myCtrl", function($scope) {
     console.log("stash");
     var elm = document.getElementsByClassName("pack");
     angular.element(elm).toggleClass("stash");
+    if (angular.element(elm).hasClass("stash")) {
+      angular.element(document.getElementsByClassName("home")).removeClass("pull");
+      angular.element(elm).removeClass("combine");
+    }
   }
   $scope.pull = function() {
     console.log("pull");
     var elm = document.getElementsByClassName("home");
     angular.element(elm).toggleClass("pull");
+    if (angular.element(elm).hasClass("pull")) {
+      angular.element(document.getElementsByClassName("pack")).removeClass("stash");
+      angular.element(document.getElementsByClassName("pack")).removeClass("combine");
+    }
   }
   $scope.combine = function() {
     console.log("combine");
     var elm = document.getElementsByClassName("pack");
-    angular.element(elm).toggleClass("stash");
+    angular.element(elm).toggleClass("combine");
+    if (angular.element(elm).hasClass("combine")) {
+      angular.element(elm).removeClass("stash");
+      angular.element(document.getElementsByClassName("home")).removeClass("pull");
+    }
   }
   
   $scope.itemAction = function(idx, e) {
@@ -148,6 +174,105 @@ app.controller("myCtrl", function($scope) {
           getItems();
         });
       });
+    }
+    if (elm.parent().hasClass("combine")) {
+      elm.parent().toggleClass("inCombo");
+
+      var combos = document.getElementsByClassName("inCombo");
+      console.log(combos.length);
+      if (combos.length == 0) {
+        $scope.comboHelper = -1;
+      }
+      if (combos.length == 1) {
+        $scope.comboHelper = idx;
+      }
+      // TODO this could be optimized... a lot ...
+      if (combos.length == 2) {
+        $scope.combine();
+        var indexOne = $scope.comboHelper;
+        var indexTwo = idx;
+        if ($scope.comboHelper > idx) {
+          indexOne = idx;
+          indexTwo = $scope.comboHelper;
+        }
+
+        
+
+        chrome.storage.sync.get(null, function(obj) {
+          // Would be cool to do a fadeout here
+          angular.element(combos).removeClass("inCombo");
+          var elmOne = $scope.items[$scope.comboHelper];
+          delete elmOne["storage"];
+          var elmTwo = $scope.items[idx];
+          delete elmTwo["storage"];
+          $scope.comboHelper = -1;
+          var newElm = null;
+
+          for (gameObjIdx in gameObjects) {
+            var gameObj = gameObjects[gameObjIdx];
+            if (gameObj.name == elmOne.name) {
+              for (combIdx in gameObj.combinations) {
+                if ((gameObj.combinations[combIdx].inputs[0] == elmOne.name
+                        && gameObj.combinations[combIdx].inputs[1] == elmTwo.name)
+                    || (gameObj.combinations[combIdx].inputs[0] == elmTwo.name
+                        && gameObj.combinations[combIdx].inputs[1] == elmOne.name)) {
+                  newElm = gameObj.combinations[combIdx].result;
+                  console.log("Match Found");
+                }
+              }
+            }
+            // Unnecessary
+            // if (gameObj.name == elmTwo.name) {}
+          }
+
+
+
+          var trash = null;
+          for (gameObjIdx in gameObjects) {
+            var gameObj = gameObjects[gameObjIdx];
+            if (gameObj.name == newElm) {
+              // Is this just the full object?
+              console.log("Populating Object");
+              newElm = {};
+              newElm.name = gameObj.name;
+              newElm.value = gameObj.value;
+              newElm.attack = gameObj.attack;
+              newElm.icon = gameObj.icon;
+              newElm.combinations = gameObj.combinations
+            }
+            if (gameObj.name == "Trash") {
+              trash = {};
+              trash.name = gameObj.name;
+              trash.value = gameObj.value;
+              trash.attack = gameObj.attack;
+              trash.icon = gameObj.icon;
+              trash.combinations = gameObj.combinations
+            }
+            // Not necessary
+            // if (gameObj.name == elmTwo.name) {}
+          }
+
+          // If no combinations then you get garbage
+          if (newElm == null) newElm = trash;
+
+
+          console.log(indexOne);
+          console.log(indexTwo);
+          // This order matters. If indexOne is less and before it messes up indexTwo
+          obj["packStorage"].splice(indexTwo, 1);
+          obj["packStorage"].splice(indexOne, 1);
+          obj["packStorage"].push(newElm);
+          obj["numCombines"] = obj["numCombines"] - 1;
+          if (obj["numCombines"] == 0) {
+            // TODO More hacks
+            angular.element(document.getElementById("combiner")).prop('disabled', true);
+          }
+
+          chrome.storage.sync.set(obj, function() {
+            getItems();
+          });
+        });
+      }
     }
   }
 });
