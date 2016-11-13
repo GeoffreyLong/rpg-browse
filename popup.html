@@ -27,7 +27,9 @@
   </head>
   <body>
     <div ng-app="appGui" ng-controller="myCtrl">
-      {{temp}}
+      <div ng-repeat="item in items">
+        {{item.name}}
+      </div>
     </div>
 </div>
   </body>
