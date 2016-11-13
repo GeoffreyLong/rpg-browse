@@ -39,24 +39,10 @@ port.onMessage.addListener(function(msg) {
 function runScraper() {
   console.log($('body'));
   
-  var elms = $('body').find('*').filter(function() {
-    return ($(this).children().length == 0 && $(this).text().split(/\s+/).length > 4);
+  var elms = $('body').find('*:not([href]):not("script")').filter(function() {
+    return ($(this).children().length == 0 && $(this).text().split(/\s+/).length > 10);
   });
   console.log(elms);
-  /*
-  var elms = $('body').find('*').filter(function() {
-    var str = '';
-    $(this).contents().each(function() {
-        if (this.nodeType == 3) {
-            str += this.textContent || this.innerText || '';
-        }
-    });
-
-    return str.split(/\s+/).length > 15;
-  })
-  console.log(elms);
-  */
-  console.log(recurScraper($('body')));
 
   for(var i = 0; i < keywords.length; i++){
     $("body:not([href]):not(:image)").html($("body:not([href]):not(:image)").html().replace(new RegExp(keywords[i].word, "ig"),"<button class='dynButton' id='"+i+"'> " + keywords[i].word + " </button>"));
@@ -66,20 +52,6 @@ function runScraper() {
   $(".dynButton").click(handler);
 }
 
-/*
-function recurScraper(elm) {
-  if (elm.children().length == 0) {
-    return elm;
-  }
-  else {
-    var elms = [];
-    elm.children().each(function() {
-      elms.push(recurScraper(this));
-    });
-    return elms;
-  }
-}
-*/
 // The button data will be the keyword object that is matched
 function handler(){
   var actionIndex = $(this).attr('id');
