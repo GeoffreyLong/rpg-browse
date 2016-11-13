@@ -4,6 +4,8 @@ console.log("Background");
 var user = {};
 // Make game objects accessible
 var gameObjs = [];
+// Make keywords accessible
+var keywords = {};
 
 
 // Populate user
@@ -19,6 +21,7 @@ chrome.storage.sync.get(null, function(obj) {
     user.homeStorage = [];
     user.acheivements = {};
     user.acheivements.pages = 0;
+    user.numCombines = 0;
 
     chrome.storage.sync.set(user, function() { console.log("Saved user"); });
   }
@@ -31,6 +34,7 @@ chrome.storage.sync.get(null, function(obj) {
     user.packStorage = obj.packStorage;
     user.homeStorage = obj.homeStorage;
     user.acheivements = obj.acheivements;
+    user.numCombines = obj.numCombines;
   }
 });
 
@@ -47,6 +51,21 @@ $.getJSON("GameObjects.json", function(data) {
 });
 
 
+// Populate keywords
+$.getJSON("keywords.json", function(data) {
+  if (data.length > 0) {
+    alert("Found keywords");
+    keywords = {};
+    keywords["keywords"] = data;
+    chrome.storage.sync.set(keywords, function() { console.log("Saved keywords"); });
+  }
+  else {
+    alert("Couldn't read keywords");
+  }
+});
+
+
+
 
 // Connect the listener
 chrome.runtime.onConnect.addListener(function(port) {
@@ -57,10 +76,16 @@ chrome.runtime.onConnect.addListener(function(port) {
       returnMessage = gather(msg.word);
     }
     else if (msg.action == "fight") {
-      //returnMessage = fight(msg.data);
+      returnMessage = fight(msg.data);
+    }
+    else if (msg.action == "heal") {
+
     }
     else if (msg.action == "store") {
-
+      // More difficult since need gui implementation
+    }
+    else if (msg.action == "combine") {
+      returnMessage = combine();
     }
     else {
       returnMessage.response = "Error";
@@ -109,4 +134,22 @@ function gather(resource) {
   }
 
   return returnMessage;
+}
+
+
+// Fight something
+function fight() {
+
+
+
+}
+
+// Combine two items
+// This will have to be done through the popup...
+function combine() {
+  // Simply increment the number of combines we can use
+  user.numCombines = user.numCombines + 1;
+
+  // Probs don't need to pass this whole thing...
+  chrome.storage.sync.set(user, function() { console.log("Saved user"); });
 }
