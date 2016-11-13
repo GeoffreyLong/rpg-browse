@@ -4,6 +4,8 @@ console.log("Background");
 var user = {};
 // Make game objects accessible
 var gameObjs = [];
+// Make keywords accessible
+var keywords = {};
 
 
 // Populate user
@@ -47,6 +49,21 @@ $.getJSON("GameObjects.json", function(data) {
     alert("Couldn't read game objects");
   }
 });
+
+
+// Populate keywords
+$.getJSON("keywords.json", function(data) {
+  if (data.length > 0) {
+    alert("Found keywords");
+    keywords = {};
+    keywords["keywords"] = data;
+    chrome.storage.sync.set(keywords, function() { console.log("Saved keywords"); });
+  }
+  else {
+    alert("Couldn't read keywords");
+  }
+});
+
 
 
 

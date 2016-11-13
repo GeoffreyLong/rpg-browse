@@ -5,40 +5,48 @@
 //      don't want to run before full load
 //      Might also be able to do this via the chrome API 
 console.log("Scraper Running");
-var keywords = ["sword", "gold", "yellow", "blue", "green", "china", "civil", "state"];
-var itemStorage = [ ];
+var keywords = [];
+var itemStorage = [];
 
+// Populate keywords
+// Then run the scraper
+chrome.storage.sync.get("keywords", function(obj) {
+  keywords = obj["keywords"];
+  console.log(obj);
+  runScraper();
+})
+
+
+
+// Open port for communications
+var port = chrome.runtime.connect({name: "scraper"});
+port.onMessage.addListener(function(msg) {
+  if (msg.response == "Success") {
+    alert(msg.message);
+    console.log(msg.message);
+  }
+  else if (msg.response == "Error") {
+    alert(msg.message);
+    console.log(msg.message);
+  }
+});
+
+
+
+// Run scraper
 // This will match the keywords with the page textx
 // Will also create the necessary buttons
-(function() {
-  function runScraper() {
-    console.log($('body'));
-     for(var i = 0; i < keywords.length; i++){
-     $("body:not([href]):not(:image)").html($("body:not([href]):not(:image)").html().replace(new RegExp(keywords[i], "ig"),"<button onclick = "buttonInfo()"> " + keywords[i] + " </button>"));
-     console.log("Ran it " + i);
+function runScraper() {
+  console.log($('body'));
+  for(var i = 0; i < keywords.length; i++){
+    $("body:not([href]):not(:image)").html($("body:not([href]):not(:image)").html().replace(new RegExp(keywords[i].word, "ig"),"<button onclick='" + buttonAction(keywords[i]) + "'> " + keywords[i].word + " </button>"));
+    console.log("Ran it " + i);
   }
 
-  }
+}
 
 
-  function getButtonInfo(){
-    itemStorage.push($('button.text').text());
-    
-
-
-  }
-  function createActionButton() {
-  }
-
-  
-
-
-
-  runScraper();
-})();
-
-
-// TODO create the functions that the buttons will call
-//      These will pass data to the chrome extension (see message passing)
-//      Or we can consider a hack like this http://stackoverflow.com/questions/9515704/building-a-chrome-extension-inject-code-in-a-page-using-a-content-script
-
+// The button data will be the keyword object that is matched
+function buttonAction(buttonData){
+  port.postMessage(buttonData);
+}
