@@ -1,7 +1,7 @@
 var port = chrome.runtime.connect({name: "scraper"});
 port.postMessage({
   action: "gather",
-  data: "sword"
+  word: "sword"
 });
 
 

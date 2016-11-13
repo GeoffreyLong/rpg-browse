@@ -3,7 +3,7 @@
   "value": 3,
   "damage": 0,
   "isKeyword": true,
-  "icon": "img/iron.svg",
+  "icon": "img/iron.png",
   "combinations": [{
     "result": "Sword",
     "inputs": ["Iron", "Wood"]
@@ -13,62 +13,62 @@
   }, {
     "result": "Iron Armor",
     "inputs": ["Iron", "Leather Armor"]
-}]
+  }]
 }, {
   "name": "Wood",
   "value": 2,
   "damage": 0,
   "isKeyword": true,
-  "icon": "img/wood.svg",
+  "icon": "img/wood.png",
   "combinations": [{
-  "result": "Sword",
-  "inputs": ["Wood", "Iron"]
+    "result": "Sword",
+    "inputs": ["Wood", "Iron"]
   }, {
-  "result": "Bow",
-  "inputs": ["Wood", "String"]
+    "result": "Bow",
+    "inputs": ["Wood", "String"]
   }]
 }, {
-"name": "Gunpowder",
-"value": 5,
-"damage": 0,
-"isKeyword": true,
-"icon": "img/gunpowder.svg",
-"combinations": [{
-"result": "Gun",
-"inputs": ["Gunpowder", "Iron"]
+  "name": "Gunpowder",
+  "value": 5,
+  "damage": 0,
+  "isKeyword": true,
+  "icon": "img/gunpowder.png",
+  "combinations": [{
+    "result": "Gun",
+    "inputs": ["Gunpowder", "Iron"]
+  }, {
+    "result": "Bomb",
+    "inputs": ["Gunpowder", "Bottle"]
+  }]
 }, {
-"result": "Bomb",
-"inputs": ["Gunpowder", "Bottle"]
-}]
+  "name": "Stick",
+  "value": 3,
+  "damage": 3,
+  "isKeyword": true,
+  "icon": "img/stick.png",
+  "combinations": [{
+    "result": "Spear",
+    "inputs": ["Stick", "Stone"]
+  }, {
+    "result": "Staff",
+    "inputs": ["Stick", "Gem"]
+  }]
 }, {
-"name": "Stick",
-"value": 3,
-"damage": 3,
-"isKeyword": true,
-"icon": "img/stick.svg",
-"combinations": [{
-"result": "Spear",
-"inputs": ["Stick", "Stone"]
-}, {
-"result": "Staff",
-"inputs": ["Stick", "Gem"]
-}]
-}, {
-"name": "Stone",
-"value": 1,
-"damage": 0,
-"isKeyword": true,
-"icon": "img/stone.svg",
-"combinations": [{
-"result": "Spear",
-"inputs": ["Stone", "Stick"]
-}]
+  "name": "Stone",
+  "value": 1,
+  "damage": 0,
+  "isKeyword": true,
+  "icon": "img/stone.png",
+  "combinations": [{
+  "result": "Spear",
+  "inputs": ["Stone", "Stick"]
+  }]
 }, {
 "name": "Herb",
 "value": 2,
 "damage": 0,
 "isKeyword": true,
-"icon": "img/herb.svg",
+"icon": "img/herb.png",
 "combinations": [{
 "result": "Potion",
 "inputs": ["Herb", "Bottle"]
@@ -78,7 +78,7 @@
 "value": 2,
 "damage": 0,
 "isKeyword": true,
-"icon": "img/mushroom.svg",
+"icon": "img/mushroom.png",
 "combinations": [{
 "result": "Poison",
 "inputs": ["Mushroom", "Bottle"]
@@ -88,7 +88,7 @@
 "value": 3,
 "damage": 0,
 "isKeyword": true,
-"icon": "img/bottle.svg",
+"icon": "img/bottle.png",
 "combinations": [{
 "result": "Potion",
 "inputs": ["Bottle", "Herb"]
@@ -104,7 +104,7 @@
 "value": 3,
 "damage": 0,
 "isKeyword": true,
-"icon": "img/string.svg",
+"icon": "img/string.png",
 "combinations": [{
 "result": "Bow",
 "inputs": ["String", "Wood"]
@@ -117,37 +117,29 @@
 "value": 5,
 "damage": 0,
 "isKeyword": true,
-"icon": "img/gold.svg",
+"icon": "img/gold.png",
 "combinations": [{
 "result": "Golden Sword",
 "inputs": ["Gold", "Sword"]
 }, {
 "result": "Golden Bow",
 "inputs": ["Gold", "Bow"]
-
-
 }, {
 "result": "Golden Spear",
 "inputs": ["Gold", "Spear"]
-
-
 }, {
 "result": "Golden Staff",
 "inputs": ["Gold", "Staff"]
-
-
 }, {
 "result": "Golden Armor",
 "inputs": ["Gold", "Iron Armor"]
-
-
 }]
 }, {
 "name": "Gem",
 "value": 5,
 "damage": 0,
 "isKeyword": true,
-"icon": "img/gem.svg",
+"icon": "img/gem.png",
 "combinations": [{
 "result": "Staff",
 "inputs": ["Gem", "Stick"]
@@ -157,7 +149,7 @@
 "value": 3,
 "damage": 0,
 "isKeyword": true,
-"icon": "img/leather.svg",
+"icon": "img/leather.png",
 "combinations": [{
 "result": "Leather Armor",
 "inputs": ["Leather", "String"]
@@ -167,14 +159,14 @@
 "value": 0,
 "damage": 0,
 "isKeyword": true,
-"icon": "img/trash.svg",
+"icon": "img/trash.png",
 "combinations": []
 }, {
 "name": "Sword",
 "value": 10,
 "damage": 10,
 "isKeyword": false,
-"icon": "img/sword.svg",
+"icon": "img/sword.png",
 "combinations": [{
 "result": "Poison Sword",
 "inputs": ["Sword", "Poison"]
@@ -187,21 +179,21 @@
 "value": 15,
 "damage": 15,
 "isKeyword": false,
-"icon": "img/poison_sword.svg",
+"icon": "img/poison_sword.png",
 "combinations": []
 }, {
 "name": "Golden Sword",
 "value": 20,
 "damage": 20,
 "isKeyword": false,
-"icon": "img/golden_sword.svg",
+"icon": "img/golden_sword.png",
 "combinations": []
 }, {
 "name": "Bow",
 "value": 10,
 "damage": 10,
 "isKeyword": false,
-"icon": "img/bow.svg",
+"icon": "img/bow.png",
 "combinations": [{
 "result": "Golden Bow",
 "inputs": ["Bow", "Gold"]
@@ -211,14 +203,14 @@
 "value": 20,
 "damage": 20,
 "isKeyword": false,
-"icon": "img/golden_bow.svg",
+"icon": "img/golden_bow.png",
 "combinations": []
 }, {
 "name": "Spear",
 "value": 10,
 "damage": 10,
 "isKeyword": false,
-"icon": "img/spear.svg",
+"icon": "img/spear.png",
 "combinations": [{
 "result": "Golden Spear",
 "inputs": ["Spear", "Gold"]
@@ -228,7 +220,7 @@
 "value": 20,
 "damage": 20,
 "isKeyword": false,
-"icon": "img/golden_spear.svg",
+"icon": "img/golden_spear.png",
 "combinations": [{
 "result": "Golden Spear",
 "inputs": ["Spear", "Gold"]
@@ -238,7 +230,7 @@
 "value": 10,
 "damage": 10,
 "isKeyword": false,
-"icon": "img/staff.svg",
+"icon": "img/staff.png",
 "combinations": [{
 "result": "Golden Staff",
 "inputs": ["Staff", "Gold"]
@@ -248,48 +240,42 @@
 "value": 20,
 "damage": 20,
 "isKeyword": false,
-"icon": "img/golden_spear.svg",
+"icon": "img/golden_spear.png",
 "combinations": []
-}
-
-
-,
-
-
-{
+}, {
 "name": "Gun",
 "value": 20,
 "damage": 20,
 "isKeyword": false,
-"icon": "img/gun.svg",
+"icon": "img/gun.png",
 "combinations": []
 }, {
 "name": "Bomb",
 "value": 20,
 "damage": 20,
 "isKeyword": false,
-"icon": "img/bomb.svg",
+"icon": "img/bomb.png",
 "combinations": []
 }, {
 "name": "Potion",
 "value": 10,
 "damage": 0,
 "isKeyword": false,
-"icon": "img/potion.svg",
+"icon": "img/potion.png",
 "combinations": []
 }, {
 "name": "Poison",
 "value": 10,
 "damage": 0,
 "isKeyword": false,
-"icon": "img/poison.svg",
+"icon": "img/poison.png",
 "combinations": []
 }, {
 "name": "Leather Armor",
 "value": 10,
 "damage": 0,
 "isKeyword": false,
-"icon": "img/leather_armor.svg",
+"icon": "img/leather_armor.png",
 "combinations": [{
 "result": "Iron Armor",
 "inputs": ["Leather Armor", "Iron"]
@@ -299,7 +285,7 @@
 "value": 15,
 "damage": 0,
 "isKeyword": false,
-"icon": "img/iron_armor.svg",
+"icon": "img/iron_armor.png",
 "combinations": [{
 "result": "Golden Armor",
 "inputs": ["Iron Armor", "Gold"]
@@ -309,8 +295,6 @@
 "value": 20,
 "damage": 0,
 "isKeyword": false,
-"icon": "img/golden_armor.svg",
+"icon": "img/golden_armor.png",
 "combinations": []
-}
-]
-
+}]

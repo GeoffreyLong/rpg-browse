@@ -36,7 +36,15 @@ chrome.storage.sync.get(null, function(obj) {
 
 
 // Populate gameObjs
-
+$.getJSON("GameObjects.json", function(data) {
+  if (data.length > 0) {
+    alert("Found game objects");
+    gameObjs = data;
+  }
+  else {
+    alert("Couldn't read game objects");
+  }
+});
 
 
 
@@ -46,10 +54,10 @@ chrome.runtime.onConnect.addListener(function(port) {
   port.onMessage.addListener(function(msg) {
     var returnMessage = {};
     if (msg.action == "gather") {
-      returnMessage = gather(msg.data);
+      returnMessage = gather(msg.word);
     }
     else if (msg.action == "fight") {
-
+      //returnMessage = fight(msg.data);
     }
     else if (msg.action == "store") {
 
@@ -69,23 +77,28 @@ function gather(resource) {
   if (user.packStorage.length < user.packSize) {
     var newObj = {};
 
-    // TODO find and populate object...
+    // Very slow way to find the correct object
+    for (i in gameObjs) {
+      gobj = gameObjs[i];
+      // If object matches then add in necessary fields
+      if (gobj.name && gobj.name.toLowerCase() == resource.toLowerCase()) {
+        newObj.name = gobj.name;
+        newObj.icon = gobj.icon;
+        newObj.value = gobj.value;
+        newObj.damage = gobj.damage;
+        newObj.combinations = jQuery.extend(true, {}, gobj.combinations);
+      }
+    }
 
-    // TEMPORARY!!!
-    var sword = {
-      "name": "Sword",
-      "icon": "img/sword.png",
-      "value": 5,
-      "damage": 5,
-      "combinations": [{
-        "result": "Golden Sword",
-        "inputs": ["Gold", "Sword"]
-      }]
-    };
-    user.packStorage.push(sword);
-
-    returnMessage.response = "Success";
-    returnMessage.message = "Added " + resource + " to your pack";
+    if (jQuery.isEmptyObject(newObj)) {
+      returnMessage.response = "Error";
+      returnMessage.message = "Couldn't add " + resource + " to your pack";
+    }
+    else {
+      returnMessage.response = "Success";
+      returnMessage.message = "Added " + resource + " to your pack";
+      user.packStorage.push(newObj);
+    }
 
     // Probs don't need to pass this whole thing...
     chrome.storage.sync.set(user, function() { console.log("Saved user"); });
