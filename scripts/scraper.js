@@ -39,14 +39,16 @@ port.onMessage.addListener(function(msg) {
 function runScraper() {
   console.log($('body'));
   for(var i = 0; i < keywords.length; i++){
-    $("body:not([href]):not(:image)").html($("body:not([href]):not(:image)").html().replace(new RegExp(keywords[i].word, "ig"),"<button onclick='" + buttonAction(keywords[i]) + "'> " + keywords[i].word + " </button>"));
+    $("body:not([href]):not(:image)").html($("body:not([href]):not(:image)").html().replace(new RegExp(keywords[i].word, "ig"),"<button class='dynButton' id='"+i+"'> " + keywords[i].word + " </button>"));
     console.log("Ran it " + i);
   }
 
+  $(".dynButton").click(handler);
 }
 
 
 // The button data will be the keyword object that is matched
-function buttonAction(buttonData){
-  port.postMessage(buttonData);
+function handler(){
+  var actionIndex = $(this).attr('id');
+  port.postMessage(keywords[actionIndex]);
 }
