@@ -3,7 +3,7 @@
 // TODO 
 //    Consider adding a "run_at": "document_end" in the manifest... 
 //      don't want to run before full load
-//      Might also be able to do this via the chrome API  
+//      Might also be able to do this via the chrome API 
 console.log("Scraper Running");
 
 // This will hold all of the scraping logic
@@ -18,6 +18,53 @@ console.log("Scraper Running");
     // Be disruptive
     // Make money
     // Change the world
+
+    var wordArray = [" "];
+    var paragraphText = $('body').find(":not(script)");
+    var tags = ["2"];
+
+    /*
+    for(var i =0; i < paragraphText.length; i++)
+    {
+      tags.push(findDeepestChild(paragraphText[i]));
+      wordArray.push(paragraphText[i].innerText.split("/\W/"));
+      if (paragraphText[i].innerText.length > 7 )
+      {
+          var inHtml = $(paragraphText[i]).html();
+          if (inHtml) {
+
+            /*
+        console.log(inHtml);
+          var button = "</p>" + "<button> civil </button>" + "<p>";
+          
+          $(paragraphText[i]).html(inHtml.replace(/civil/gi, button));
+          
+
+
+          }
+      }
+    }
+    */
+    
+    for(var i =0; i < paragraphText.length; i++)
+    {
+      tags.push(findDeepestChild(paragraphText[i]));
+    }
+
+    for(var i = 0; i < tags.length; i++)
+    {
+
+      wordArray.push(tags[i].element);
+    }
+
+   
+
+
+
+    console.log(tags);  
+    console.log(paragraphText);
+    console.log(wordArray);
+
   }
 
   function createResourceButton() {
@@ -28,6 +75,26 @@ console.log("Scraper Running");
   }
   function createActionButton() {
   }
+
+  function findDeepestChild(parent) {
+
+    var result = {depth: 0, element: parent};
+
+    $(parent) .children().each(
+        function(idx) {
+            var child = $(this);
+            var childResult = findDeepestChild(child);
+            if (childResult.depth + 1 > result.depth) {
+                result = {
+                    depth: 1 + childResult.depth, 
+                    element: childResult.element};
+            }
+        }
+    );
+
+    return result;
+}
+
 
 
   runScraper();
