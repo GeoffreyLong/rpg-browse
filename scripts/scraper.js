@@ -101,4 +101,7 @@ console.log("Scraper Running");
 })();
 
 
+// TODO create the functions that the buttons will call
+//      These will pass data to the chrome extension (see message passing)
+//      Or we can consider a hack like this http://stackoverflow.com/questions/9515704/building-a-chrome-extension-inject-code-in-a-page-using-a-content-script
 
