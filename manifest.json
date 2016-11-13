@@ -13,7 +13,7 @@
     "css": [],
     "js": [
       "scripts/jquery-3.1.1.min.js",
-      "scripts/scraper.js"
+      "scripts/commTemp.js"
     ],
     "matches": ["*://*/*"]
   }],

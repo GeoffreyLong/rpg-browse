@@ -12,11 +12,17 @@ app.controller("myCtrl", function($scope) {
   // This just seems inefficient to do it this way though
   function getItems() {
     chrome.storage.sync.get("packStorage", function(obj) {
+      for (item in obj["packStorage"]) {
+        obj["packStorage"][item]["storage"] = "pack";
+      }
       $scope.items = $scope.items.concat(obj["packStorage"]);
       $scope.chunkedItems = chunk($scope.items)
       $scope.$digest();
     });
     chrome.storage.sync.get("homeStorage", function(obj) {
+      for (item in obj["homeStorage"]) {
+        obj["homeStorage"][item]["storage"] = "home";
+      }
       $scope.items = $scope.items.concat(obj["homeStorage"]);
       $scope.chunkedItems = chunk($scope.items)
       $scope.$digest();
