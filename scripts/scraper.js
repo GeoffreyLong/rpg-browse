@@ -1,21 +1,14 @@
 // This is a content script (isolated environment)
 //    It will have partial access to the chrome API
-// TODO 
-//    Consider adding a "run_at": "document_end" in the manifest... 
+// TODO Consider adding a "run_at": "document_end" in the manifest... 
 //      don't want to run before full load
 //      Might also be able to do this via the chrome API 
+// TODO Try to make this async
+//      We want each button to pop up after it has been scraped
+//      Right now they all populate at once after all execution
 console.log("Scraper Running");
 var keywords = [];
 var itemStorage = [];
-
-// Populate keywords
-// Then run the scraper
-chrome.storage.sync.get("keywords", function(obj) {
-  keywords = obj["keywords"];
-  console.log(obj);
-  runScraper();
-})
-
 
 // Open port for communications
 var port = chrome.runtime.connect({name: "scraper"});
@@ -30,6 +23,23 @@ port.onMessage.addListener(function(msg) {
   }
 });
 
+
+// Increase the XP by 50 for the page visit
+(function(increase) {
+  chrome.storage.sync.get("xp", function(obj) {
+    var newXP = obj["xp"] + increase
+    chrome.storage.sync.set({"xp": newXP});
+  });
+})(50);
+
+
+// Populate keywords
+// Then run the scraper
+chrome.storage.sync.get("keywords", function(obj) {
+  keywords = obj["keywords"];
+  console.log(obj);
+  runScraper();
+});
 
 
 // Run scraper
@@ -50,17 +60,14 @@ function runScraper() {
   }
 
 
-
   $(".dynButton").click(handler);
 }
 
 
 // The button data will be the keyword object that is matched
-function handler(){
+function handler(e){
+  e.stopPropagation();
+  e.preventDefault();
   var actionIndex = $(this).attr('id');
   port.postMessage(keywords[actionIndex]);
 }
-
-
-
-

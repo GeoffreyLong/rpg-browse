@@ -18,12 +18,17 @@ app.controller("myCtrl", function($scope) {
   var gameObjects = [];
   getGameObjs();
 
-  incrementXP(50);
-
   // Should probably encapsulate this in a service?
   // Actually, this html is being reloaded each time...
   // This just seems inefficient to do it this way though
   function getItems() {
+    // TESTING LOOP TODO REMOVE
+    chrome.storage.sync.get(null, function(obj) {
+      for (key in obj) {
+        console.log(key + ": " + obj[key]);
+      }
+    });
+
     $scope.items = [];
     $scope.user = {};
     chrome.storage.sync.get("packStorage", function(obj) {
@@ -58,6 +63,10 @@ app.controller("myCtrl", function($scope) {
       $scope.user.numCombines = obj["numCombines"];
       $scope.$digest();
     });
+    chrome.storage.sync.get("xp", function(obj) {
+      $scope.user.xp = obj["xp"];
+      $scope.$digest();
+    });
   }
 
   function getGameObjs() {
@@ -65,38 +74,6 @@ app.controller("myCtrl", function($scope) {
       gameObjects = obj["GameObjects"];
     });
   }
-
-  function incrementXP(increase) {
-    chrome.storage.sync.get("xp", function(obj) {
-      $scope.user.xp = obj["xp"];
-      // Will increment whenever this fn is called
-      // Will want to pull this out of this fn
-      $scope.user.xp = $scope.user.xp + 50;
-      if (!$scope.user.xp) $scope.user.xp = 50;
-      chrome.storage.sync.set({"xp": $scope.user.xp});
-      $scope.$digest();
-    });
-  }
-
-  /*
-  function chunk(arr) {
-    var size = 5;
-    console.log(window.innerWidth);
-    if (window.innerWidth > 1500) {
-      size = 5;
-    }
-
-    var newArr = [];
-    for (var i = 0; i < size; i += size) {
-      var tempArr = [];
-      for (var j = i; j < arr.length; j += 1) {
-        tempArr.push(arr[j]);
-      }
-      newArr.push(tempArr);
-    }
-    return newArr;
-  }
-  */
 
 
   $scope.stash = function() {
