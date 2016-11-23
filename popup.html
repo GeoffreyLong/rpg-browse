@@ -61,7 +61,7 @@
   <body>
     <div ng-app="appGui" ng-controller="myCtrl">
       <div layout="column" layout-align="center center"> 
-        <div layout="row" layout-align="center center">
+        <div style="padding-top: 10px" layout="row" layout-align="center center">
           <div class="userMetric">
             Health: {{user.health}}
           </div>
@@ -71,12 +71,9 @@
         </div>
         <div layout="row" layout-align="center center">
           <!-- TODO The ng-disabled isn't working right -->
-          <md-button  id="stasher" ng-disabled={{user.numStores == 0 | iif : "true" : "false"}}
-                      ng-click="stash()"> Stash ({{user.numStores || "0"}}) </md-button>
-          <md-button  id="puller" ng-disabled={{user.numPulls == 0 | iif : "true" : "false"}}
-                      ng-click="pull()"> Equip ({{user.numPulls || "0"}}) </md-button>
-          <md-button  id="combiner" ng-disabled={{user.numCombines == 0 | iif : "true" : "false"}}
-                      ng-click="combine()"> Combine ({{user.numCombines || "0"}}) </md-button>
+          <md-button  id="stasher" ng-click="stash()"> Stash ({{user.numStores || "0"}}) </md-button>
+          <md-button  id="puller" ng-click="pull()"> Equip ({{user.numPulls || "0"}}) </md-button>
+          <md-button  id="combiner" ng-click="combine()"> Combine ({{user.numCombines || "0"}}) </md-button>
         </div>
         <div layout="row">
         <div ng-repeat="item in items track by $index" class="item" ng-click="itemAction($index, $event)">

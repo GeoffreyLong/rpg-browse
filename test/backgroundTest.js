@@ -1,6 +1,9 @@
 // chrome.extension.getBackgroundPage().console.log('foo');
 
 (function() {
+  // Clear the cache
+  // chrome.storage.synch.clear();
+
   // Populate the local client with data for the user
   // This is just for the purposes of testing, real users would be saved in chrome storage
   $.getJSON("test/userData.json", function(data) {

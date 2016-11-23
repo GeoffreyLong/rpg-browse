@@ -10,7 +10,7 @@
 // TODO finish these notes 
 
 
-console.log("Background");
+console.log("Background running");
 
 // Make user accessible
 var user = {};
@@ -63,7 +63,10 @@ chrome.storage.sync.get(null, function(obj) {
 $.getJSON("GameObjects.json", function(data) {
   if (data.length > 0) {
     alert("Found game objects");
+
+    // Make gameObjs accessible outside fn
     gameObjs = data;
+
     var gameObjSend = {};
     gameObjSend["GameObjects"] = data;
     chrome.storage.sync.set(gameObjSend, function() { console.log("Saved GameObjects"); });
@@ -78,6 +81,7 @@ $.getJSON("GameObjects.json", function(data) {
 $.getJSON("keywords.json", function(data) {
   if (data.length > 0) {
     alert("Found keywords");
+
     keywords = {};
     keywords["keywords"] = data;
     chrome.storage.sync.set(keywords, function() { console.log("Saved keywords"); });
