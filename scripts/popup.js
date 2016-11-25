@@ -40,7 +40,7 @@ app.controller("myCtrl", function($scope, $q) {
     getStorage("user");
     getStorage("packStorage");
     getStorage("homeStorage");
-    getStorage("GameObjects")
+    getStorage("GameObjects");
   }
 
 
@@ -62,33 +62,29 @@ app.controller("myCtrl", function($scope, $q) {
 
 
   // This is all the logic for the buttons
-  $scope.stash = function() {
-    console.log("stash");
-    var elm = document.getElementsByClassName("pack");
-    angular.element(elm).toggleClass("stash");
-    if (angular.element(elm).hasClass("stash")) {
-      angular.element(document.getElementsByClassName("home")).removeClass("pull");
-      angular.element(elm).removeClass("combine");
+  // Will basically handle the highlighting and will append classes for later processing
+  $scope.toggleButton = function(action) {
+    var packElms = angular.element(document.getElementsByClassName("pack"));
+    var homeElms = angular.element(document.getElementsByClassName("home"));
+
+    if (action == "stash" || action == "combine") {
+      packElms.toggleClass(action);
+      if (packElms.hasClass(action)) {
+        homeElms.removeClass("pull");
+        packElms.removeClass("stash");
+        packElms.removeClass("combine");
+        packElms.addClass(action);
+      }
+    }
+    if (action == "pull") {
+      homeElms.toggleClass(action);
+      if (homeElms.hasClass(action)) {
+        packElms.removeClass("stash");
+        packElms.removeClass("combine");
+      }
     }
   }
-  $scope.pull = function() {
-    console.log("pull");
-    var elm = document.getElementsByClassName("home");
-    angular.element(elm).toggleClass("pull");
-    if (angular.element(elm).hasClass("pull")) {
-      angular.element(document.getElementsByClassName("pack")).removeClass("stash");
-      angular.element(document.getElementsByClassName("pack")).removeClass("combine");
-    }
-  }
-  $scope.combine = function() {
-    console.log("combine");
-    var elm = document.getElementsByClassName("pack");
-    angular.element(elm).toggleClass("combine");
-    if (angular.element(elm).hasClass("combine")) {
-      angular.element(elm).removeClass("stash");
-      angular.element(document.getElementsByClassName("home")).removeClass("pull");
-    }
-  }
+
   // TODO encapsulate better
   // This runs when an item button is pressed
   $scope.itemAction = function(idx, e) {

@@ -41,6 +41,10 @@
         padding-right: 10px;
         padding-left: 10px;
       }
+      /* TODO implement */
+      .md-button.clicked {
+        background-color: rgba(0,0,0,1);
+      }
     </style>
 
     <!--
@@ -71,9 +75,9 @@
         </div>
         <div layout="row" layout-align="center center">
           <!-- TODO The ng-disabled isn't working right -->
-          <md-button  id="stasher" ng-click="stash()"> Stash ({{user.numStores || "0"}}) </md-button>
-          <md-button  id="puller" ng-click="pull()"> Equip ({{user.numPulls || "0"}}) </md-button>
-          <md-button  id="combiner" ng-click="combine()"> Combine ({{user.numCombines || "0"}}) </md-button>
+          <md-button  id="stasher" ng-click="toggleButton('stash')"> Stash ({{user.numStores || "0"}}) </md-button>
+          <md-button  id="puller" ng-click="toggleButton('pull')"> Equip ({{user.numPulls || "0"}}) </md-button>
+          <md-button  id="combiner" ng-click="toggleButton('combine')"> Combine ({{user.numCombines || "0"}}) </md-button>
         </div>
         <div layout="row">
           <!-- TODO Can I condense this? -->
