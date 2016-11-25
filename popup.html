@@ -76,12 +76,19 @@
           <md-button  id="combiner" ng-click="combine()"> Combine ({{user.numCombines || "0"}}) </md-button>
         </div>
         <div layout="row">
-        <div ng-repeat="item in items track by $index" class="item" ng-click="itemAction($index, $event)">
-          <div layout="column" class={{item.storage}} layout-align="center center">
-            <div> {{item.name}} </div>
-            <img style="max-width: 64px" src={{item.icon}} alt="icon"> </img>
+          <!-- TODO Can I condense this? -->
+          <div ng-repeat="item in packStorage track by $index" class="item" ng-click="itemAction($index, $event)">
+            <div layout="column" class="pack" layout-align="center center">
+              <div> {{item.name}} </div>
+              <img style="max-width: 64px" src={{item.icon}} alt="icon"> </img>
+            </div>
           </div>
-        </div>
+          <div ng-repeat="item in homeStorage track by $index" class="item" ng-click="itemAction($index, $event)">
+            <div layout="column" class="home" layout-align="center center">
+              <div> {{item.name}} </div>
+              <img style="max-width: 64px" src={{item.icon}} alt="icon"> </img>
+            </div>
+          </div>
         </div>
       </div>
     </div>
