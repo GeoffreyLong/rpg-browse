@@ -14,12 +14,11 @@ var app = angular.module("appGui", ['ngMaterial']);
 app.config(['$compileProvider', function ($compileProvider) {
     $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|local|data|chrome-extension):/);
 }]);
-app.controller("myCtrl", function($scope) {
+app.controller("myCtrl", function($scope, $q) {
   $scope.comboHelper = -1;
 
   // Would be best just to have one items and then the storage flag
   $scope.items = [];
-  $scope.user = {};
   populateData();
 
   var gameObjects = [];
@@ -36,8 +35,9 @@ app.controller("myCtrl", function($scope) {
       }
     });
 
+
+    getStorage("user");
     getStoredItems();
-    getUserAttrs();
   }
 
   function getStoredItems() {
@@ -60,21 +60,28 @@ app.controller("myCtrl", function($scope) {
     });
   }
 
-  function getUserAttrs() {
-    $scope.user = {};
-    chrome.storage.sync.get("user", function(obj) {
-      console.log(obj["user"]);
-      $scope.user = obj["user"];
-      $scope.$digest();
-    });
-  }
-
-
   function getGameObjs() {
     chrome.storage.sync.get("GameObjects", function(obj) {
       gameObjects = obj["GameObjects"];
     });
   }
+
+
+  function getStorage(key) {
+    function storagePromise(key) {
+      var defer = $q.defer();
+      chrome.storage.sync.get(key, function(obj) {
+        defer.resolve(obj);
+      });
+      
+      return defer.promise;
+    }
+
+    storagePromise(key).then(function(result) {
+      $scope[key] = result[key];
+    });
+  }
+
 
 
   // This is all the logic for the buttons
