@@ -241,8 +241,9 @@ app.controller("myCtrl", function($scope, $q) {
       if (newElm == null) newElm = trash;
 
       // Set the pack storage
-      $scope.packStorage.splice(indexOne, 1);
+      // Need indexTwo spliced before indexOne since it will change the underlying array
       $scope.packStorage.splice(indexTwo, 1);
+      $scope.packStorage.splice(indexOne, 1);
       $scope.packStorage.push(newElm);
       chrome.storage.sync.set({"packStorage": $scope.packStorage});
 

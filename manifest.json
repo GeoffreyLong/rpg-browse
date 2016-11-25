@@ -1,4 +1,10 @@
 {
+  // TODO Consider changing the game objects and fixed data to managed 
+  // TODO Consider using the storage onChange
+  // TODO Consider taking combinations out of the GameObjects data structure
+  // TODO Consider using the item name as the key in GameObjects
+  // TODO Consider changing the name of GameObjects to items, homeStorage to homeItems,
+  //      packStorage to packItems, pull to equip
   "manifest_version": 2,
 
   "name": "RPGamify Browser",

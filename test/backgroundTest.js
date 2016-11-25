@@ -2,6 +2,9 @@
 
 (function() {
   // Clear the cache
+  // Interestingly enough, if this is on when trying to run the app,
+  //    it deletes all of the elements set below it
+  //    In order to make this work in one shot, should set in the clear callback
   // chrome.storage.synch.clear();
 
   // Populate the local client with data for the user
