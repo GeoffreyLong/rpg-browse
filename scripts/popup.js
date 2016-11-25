@@ -19,8 +19,6 @@ app.config(['$compileProvider', function ($compileProvider) {
 }]);
 app.controller("myCtrl", function($scope, $q) {
   $scope.comboHelper = -1;
-
-  // Would be best just to have one items and then the storage flag
   $scope.user = {};
   $scope.packStorage = [];
   $scope.homeStorage = [];
@@ -34,12 +32,11 @@ app.controller("myCtrl", function($scope, $q) {
   function populateData() {
     // TESTING LOOP TODO REMOVE
     chrome.storage.sync.get(null, function(obj) {
-      for (key in obj) {
-        console.log(key + ": " + obj[key]);
-      }
+      console.log(obj);
     });
 
 
+    // Set all the requisite fields
     getStorage("user");
     getStorage("packStorage");
     getStorage("homeStorage");
@@ -47,7 +44,9 @@ app.controller("myCtrl", function($scope, $q) {
   }
 
 
+  // This will populate the scope with the specific field that is passed in
   function getStorage(key) {
+    // This is a promise to get the key and value from the storage sync
     function storagePromise(key) {
       var defer = $q.defer();
       chrome.storage.sync.get(key, function(obj) {
@@ -57,6 +56,7 @@ app.controller("myCtrl", function($scope, $q) {
       return defer.promise;
     }
 
+    // Set the scope variable 
     storagePromise(key).then(function(result) {
       $scope[key] = result[key];
     });
@@ -67,9 +67,12 @@ app.controller("myCtrl", function($scope, $q) {
   // This is all the logic for the buttons
   // Will basically handle the highlighting and will append classes for later processing
   $scope.toggleButton = function(action) {
+    // Get the home and pack storage elements from the DOM by their classes
     var packElms = angular.element(document.getElementsByClassName("pack"));
     var homeElms = angular.element(document.getElementsByClassName("home"));
 
+    // Stash and combine both affect the home elements
+    // This will add and remove the correct classes to toggle
     if (action == "stash" || action == "combine") {
       packElms.toggleClass(action);
       if (packElms.hasClass(action)) {
@@ -79,12 +82,16 @@ app.controller("myCtrl", function($scope, $q) {
         packElms.addClass(action);
       }
     }
-    if (action == "pull") {
+    else if (action == "pull") {
       homeElms.toggleClass(action);
       if (homeElms.hasClass(action)) {
         packElms.removeClass("stash");
         packElms.removeClass("combine");
       }
+    }
+
+    if (action != "combine") {
+      angular.element(document.getElementsByClassName("inCombo")).removeClass("inCombo");
     }
   }
 
@@ -111,11 +118,13 @@ app.controller("myCtrl", function($scope, $q) {
     console.log("Stashing");
     $scope.toggleButton("stash");
 
+    // Update the proper storages
     var item = $scope.packStorage[idx];
     $scope.packStorage.splice(idx, 1);
     $scope.homeStorage.push(item);
-    $scope.user.numStores = $scope.user.numStores - 1;
 
+    // Update the user variable
+    $scope.user.numStores = $scope.user.numStores - 1;
     if ($scope.user.numStores == 0) {
       angular.element(document.getElementById("stasher")).prop('disabled', true);
     }
@@ -126,18 +135,19 @@ app.controller("myCtrl", function($scope, $q) {
     chrome.storage.sync.set({"user": $scope.user});
   }
 
-  // Pull Function... This is basically the exact same as stashing
-  // TODO DRY logic
+  // Pull function
   function runPull(idx) {
     // Update the GUI button
     console.log("Equipping");
     $scope.toggleButton("pull");
 
+    // Update the proper storages
     var item = $scope.homeStorage[idx];
     $scope.homeStorage.splice(idx, 1);
     $scope.packStorage.push(item);
-    $scope.user.numPulls = $scope.user.numPulls - 1;
 
+    // Update the user variable
+    $scope.user.numPulls = $scope.user.numPulls - 1;
     if ($scope.user.numPulls == 0) {
       angular.element(document.getElementById("puller")).prop('disabled', true);
     }
@@ -227,6 +237,7 @@ app.controller("myCtrl", function($scope, $q) {
       }
 
 
+      // Set the newElm to trash if there was no combination found
       if (newElm == null) newElm = trash;
 
       // Set the pack storage
@@ -243,5 +254,4 @@ app.controller("myCtrl", function($scope, $q) {
       }
     }
   }
-
 });
