@@ -12,8 +12,10 @@
 
 console.log("Background running");
 
-// Make user accessible
-var user = {};
+// Make the main obj accessible
+var mainObj = {};
+mainObj.user = {};
+mainObj.acheivements = {};
 // Make game objects accessible
 var gameObjs = [];
 // Make keywords accessible
@@ -26,35 +28,25 @@ chrome.storage.sync.get(null, function(obj) {
   if (jQuery.isEmptyObject(obj)) {
     alert("Empty Object Found");
     
-    // Create a new user
-    user.health = 100;
-    user.maxHealth = 100;
-    user.packSize = 20;
-    user.packStorage = [];
-    user.homeStorage = [];
-    user.acheivements = {};
-    user.acheivements.pages = 0;
-    user.numCombines = 0;
-    user.numPulls = 0;
-    user.numStores = 0;
-    user.xp = 0;
+    // Create a new obj
+    mainObj.packStorage = [];
+    mainObj.homeStorage = [];
+    mainObj.user.health = 100;
+    mainObj.user.maxHealth = 100;
+    mainObj.user.packSize = 20;
+    mainObj.user.numCombines = 0;
+    mainObj.user.numPulls = 0;
+    mainObj.user.numStores = 0;
+    mainObj.user.xp = 0;
+    mainObj.acheivements.pages = 0;
 
-    chrome.storage.sync.set(user, function() { console.log("Saved user"); });
+    chrome.storage.sync.set(mainObj, function() { console.log("Saved user"); });
   }
   else {
     alert("User Found");
 
-    // Populate the user
-    user.health = obj.health;
-    user.maxHealth = obj.maxHealth;
-    user.packSize = obj.packSize;
-    user.packStorage = obj.packStorage;
-    user.homeStorage = obj.homeStorage;
-    user.acheivements = obj.acheivements;
-    user.numCombines = obj.numCombines;
-    user.numPulls = obj.numPulls;
-    user.numStores = obj.numStores;
-    user.xp = obj.xp;
+    // Populate the mainObj
+    mainObj = obj;
   }
 });
 

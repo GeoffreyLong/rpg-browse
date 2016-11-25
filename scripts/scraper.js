@@ -26,9 +26,9 @@ port.onMessage.addListener(function(msg) {
 
 // Increase the XP by 50 for the page visit
 (function(increase) {
-  chrome.storage.sync.get("xp", function(obj) {
-    var newXP = obj["xp"] + increase
-    chrome.storage.sync.set({"xp": newXP});
+  chrome.storage.sync.get("user", function(obj) {
+    var newXP = obj["user"]["xp"] + increase;
+    chrome.storage.sync.set({"user": newXP});
   });
 })(50);
 

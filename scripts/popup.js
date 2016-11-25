@@ -2,18 +2,25 @@
 //      num page visits, num combos, num items gathered, num fights won
 //      num fights lost, num items dropped
 // TODO Do I have to do the digests since the functions aren't on the scope?
+// TODO Fix the get items function (after fixing the objs)
+// TODO Fix the actual objects for the user...
+//      Want to have user with all the numPulls, xp, etc
+//      Want to have pack and home storage as is
+//      Want to have acheivments (see first todo) also
+// TODO Fix the logic of the storage tags
+// TODO The GUI is no longer updating on actions ...
 
 var app = angular.module("appGui", ['ngMaterial']);
 app.config(['$compileProvider', function ($compileProvider) {
     $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|local|data|chrome-extension):/);
 }]);
 app.controller("myCtrl", function($scope) {
+  $scope.comboHelper = -1;
+
   // Would be best just to have one items and then the storage flag
   $scope.items = [];
-  $scope.chunkedItems = [];
   $scope.user = {};
-  $scope.comboHelper = -1;
-  getItems();
+  populateData();
 
   var gameObjects = [];
   getGameObjs();
@@ -21,7 +28,7 @@ app.controller("myCtrl", function($scope) {
   // Should probably encapsulate this in a service?
   // Actually, this html is being reloaded each time...
   // This just seems inefficient to do it this way though
-  function getItems() {
+  function populateData() {
     // TESTING LOOP TODO REMOVE
     chrome.storage.sync.get(null, function(obj) {
       for (key in obj) {
@@ -29,8 +36,12 @@ app.controller("myCtrl", function($scope) {
       }
     });
 
+    getStoredItems();
+    getUserAttrs();
+  }
+
+  function getStoredItems() {
     $scope.items = [];
-    $scope.user = {};
     chrome.storage.sync.get("packStorage", function(obj) {
       for (item in obj["packStorage"]) {
         obj["packStorage"][item]["storage"] = "pack";
@@ -47,27 +58,17 @@ app.controller("myCtrl", function($scope) {
       // $scope.chunkedItems = chunk($scope.items)
       $scope.$digest();
     });
-    chrome.storage.sync.get("health", function(obj) {
-      $scope.user.health = obj["health"];
-      $scope.$digest();
-    });
-    chrome.storage.sync.get("numStores", function(obj) {
-      $scope.user.numStores = obj["numStores"];
-      $scope.$digest();
-    });
-    chrome.storage.sync.get("numPulls", function(obj) {
-      $scope.user.numPulls = obj["numPulls"];
-      $scope.$digest();
-    });
-    chrome.storage.sync.get("numCombines", function(obj) {
-      $scope.user.numCombines = obj["numCombines"];
-      $scope.$digest();
-    });
-    chrome.storage.sync.get("xp", function(obj) {
-      $scope.user.xp = obj["xp"];
+  }
+
+  function getUserAttrs() {
+    $scope.user = {};
+    chrome.storage.sync.get("user", function(obj) {
+      console.log(obj["user"]);
+      $scope.user = obj["user"];
       $scope.$digest();
     });
   }
+
 
   function getGameObjs() {
     chrome.storage.sync.get("GameObjects", function(obj) {
@@ -76,6 +77,7 @@ app.controller("myCtrl", function($scope) {
   }
 
 
+  // This is all the logic for the buttons
   $scope.stash = function() {
     console.log("stash");
     var elm = document.getElementsByClassName("pack");
@@ -103,7 +105,8 @@ app.controller("myCtrl", function($scope) {
       angular.element(document.getElementsByClassName("home")).removeClass("pull");
     }
   }
-  
+  // TODO encapsulate better
+  // This runs when an item button is pressed
   $scope.itemAction = function(idx, e) {
     var elm = angular.element(e.target);
     console.log(idx + " clicked");
@@ -124,8 +127,8 @@ app.controller("myCtrl", function($scope) {
         }
         obj["packStorage"].splice(index, 1);
         obj["homeStorage"].push(item);
-        obj["numStores"] = obj["numStores"] - 1;
-        if (obj["numStores"] == 0) {
+        obj["user"]["numStores"] = obj["user"]["numStores"] - 1;
+        if (obj["user"]["numStores"] == 0) {
           // TODO More hacks
           angular.element(document.getElementById("stasher")).prop('disabled', true);
         }
@@ -152,8 +155,8 @@ app.controller("myCtrl", function($scope) {
         }
         obj["homeStorage"].splice(index, 1);
         obj["packStorage"].push(item);
-        obj["numPulls"] = obj["numPulls"] - 1;
-        if (obj["numPulls"] == 0) {
+        obj["user"]["numPulls"] = obj["user"]["numPulls"] - 1;
+        if (obj["user"]["numPulls"] == 0) {
           // TODO More hacks
           angular.element(document.getElementById("puller")).prop('disabled', true);
         }
@@ -188,6 +191,7 @@ app.controller("myCtrl", function($scope) {
 
         chrome.storage.sync.get(null, function(obj) {
           // Would be cool to do a fadeout here
+          // This removes the specific item from the object
           angular.element(combos).removeClass("inCombo");
           var elmOne = $scope.items[$scope.comboHelper];
           delete elmOne["storage"];
@@ -196,6 +200,9 @@ app.controller("myCtrl", function($scope) {
           $scope.comboHelper = -1;
           var newElm = null;
 
+          // Iterate over the game objects to see a combination exists for them
+          // TODO should probably move combinations out of gameobj nest
+          //      I don't know of that is the most efficient storage
           for (gameObjIdx in gameObjects) {
             var gameObj = gameObjects[gameObjIdx];
             if (gameObj.name == elmOne.name) {
@@ -215,6 +222,9 @@ app.controller("myCtrl", function($scope) {
 
 
 
+          // If the new object exists in game objects then populate it
+          // Else the new object is trash
+          // TODO the trash selection also isn't very efficient
           var trash = null;
           for (gameObjIdx in gameObjects) {
             var gameObj = gameObjects[gameObjIdx];
@@ -250,8 +260,8 @@ app.controller("myCtrl", function($scope) {
           obj["packStorage"].splice(indexTwo, 1);
           obj["packStorage"].splice(indexOne, 1);
           obj["packStorage"].push(newElm);
-          obj["numCombines"] = obj["numCombines"] - 1;
-          if (obj["numCombines"] == 0) {
+          obj["user"]["numCombines"] = obj["user"]["numCombines"] - 1;
+          if (obj["user"]["numCombines"] == 0) {
             // TODO More hacks
             angular.element(document.getElementById("combiner")).prop('disabled', true);
           }
