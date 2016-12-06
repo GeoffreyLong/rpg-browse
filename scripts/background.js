@@ -89,6 +89,8 @@ chrome.runtime.onConnect.addListener(function(port) {
   console.assert(port.name == "scraper");
   port.onMessage.addListener(function(msg) {
     // May want to compare the lower cased versions of these
+    
+    console.log(msg);
     var returnMessage = {};
     if (msg.action == "gather") {
       returnMessage = gather(msg.word);
@@ -101,6 +103,9 @@ chrome.runtime.onConnect.addListener(function(port) {
     }
     else if (msg.action == "store") {
       returnMessage = store();
+    }
+    else if (msg.action == "pull") {
+      returnMessage = pull();
     }
     else if (msg.action == "combine") {
       returnMessage = combine();
@@ -117,7 +122,7 @@ chrome.runtime.onConnect.addListener(function(port) {
 // Gather resource function
 function gather(resource) {
   var returnMessage = {};
-  if (user.packStorage.length < user.packSize) {
+  if (mainObj.packStorage.length < mainObj.user.packSize) {
     var newObj = {};
 
     // Very slow way to find the correct object
@@ -140,16 +145,15 @@ function gather(resource) {
     else {
       returnMessage.response = "Success";
       returnMessage.message = "Added " + resource + " to your pack";
-      user.xp = user.xp + newObj.value * 10;
-      user.packStorage.push(newObj);
+      mainObj.user.xp = mainObj.user.xp + newObj.value * 10;
+      mainObj.packStorage.push(newObj);
     }
 
-    // Probs don't need to pass this whole thing...
-    chrome.storage.sync.set(user, function() { console.log("Saved user"); });
+    chrome.storage.sync.set(mainObj, function() { console.log("Saved user"); });
   }
   else {
     returnMessage.response = "Error";
-    returnMessage.message = "Your pack is too full!"
+    returnMessage.message = "Your pack is full!"
   }
 
   return returnMessage;
@@ -161,20 +165,20 @@ function fight(data) {
   var returnMessage = {};
 
   var userAttack = 0;
-  for (item in user.packStorage) {
-    var attack = user.packStorage[item];
+  for (item in mainObj.packStorage) {
+    var attack = mainObj.packStorage[item];
 
     // temporary method... not very good
     userAttack += attack;
   }
 
-  user.health = user.health - (Math.ceil(data.health / userAttack - 1) * data.attack);
+  mainObj.user.health = mainObj.user.health - (Math.ceil(data.health / userAttack - 1) * data.attack);
 
   // if (Math.ceil(user.health / data.attack) >= Math.ceil(data.health / userAttack)) {
-  if (user.health > 0) {
+  if (mainObj.user.health > 0) {
     returnMessage.response = "Success";
     returnMessage.message = "Successfully vanquished the foe!";
-    user.xp = uxer.xp + (Math.ceil(data.health * data.attack));
+    mainObj.user.xp = mainObj.user.xp + (Math.ceil(data.health * data.attack));
   }
   else {
     returnMessage.response = "Error";
@@ -182,12 +186,12 @@ function fight(data) {
 
     // Reset the health value
     // Reset the pack storage
-    user.health = user.maxHealth;
-    user.packStorage = [];
+    mainObj.user.health = mainObj.user.maxHealth;
+    mainObj.packStorage = [];
   }
 
   // Probs don't need to pass this whole thing...
-  chrome.storage.sync.set(user, function() { console.log("Saved user"); });
+  chrome.storage.sync.set(mainObj, function() { console.log("Saved user"); });
   return returnMessage;
 }
 
@@ -196,13 +200,13 @@ function fight(data) {
 function heal(data) {
   var returnMessage = {};
   
-  if (user.health < user.maxHealth) {
+  if (mainObj.user.health < mainObj.user.maxHealth) {
     returnMessage.response = "Success";
     returnMessage.message = "Healed by " + data.health + " health points";
 
-    user.health += data.health;
+    mainObj.user.health += data.health;
     // Probs don't need to pass this whole thing...
-    chrome.storage.sync.set(user, function() { console.log("Saved user"); });
+    chrome.storage.sync.set(mainObj, function() { console.log("Saved user"); });
   }
   else {
     returnMessage.response = "Error";
@@ -221,10 +225,12 @@ function combine() {
   returnMessage.message = "You got another combination token, see popout to use."
 
   // Simply increment the number of combines we can use
-  user.numCombines = user.numCombines + 1;
+  mainObj.user.numCombines = mainObj.user.numCombines + 1;
 
   // Probs don't need to pass this whole thing...
-  chrome.storage.sync.set(user, function() { console.log("Saved user"); });
+  chrome.storage.sync.set(mainObj, function() { console.log("Saved user"); });
+
+  return returnMessage;
 }
 function store() {
   var returnMessage = {};
@@ -232,10 +238,12 @@ function store() {
   returnMessage.message = "You got another stashing token, see popout to use."
 
   // Simply increment the number of combines we can use
-  user.numStores = user.numStores + 1;
+  mainObj.user.numStores = mainObj.user.numStores + 1;
 
   // Probs don't need to pass this whole thing...
-  chrome.storage.sync.set(user, function() { console.log("Saved user"); });
+  chrome.storage.sync.set(mainObj, function() { console.log("Saved user"); });
+
+  return returnMessage;
 }
 function pull() {
   var returnMessage = {};
@@ -243,8 +251,10 @@ function pull() {
   returnMessage.message = "You got another packing token, see popout to use."
 
   // Simply increment the number of combines we can use
-  user.numPulls = user.numPulls + 1;
+  mainObj.user.numPulls = mainObj.user.numPulls + 1;
 
   // Probs don't need to pass this whole thing...
-  chrome.storage.sync.set(user, function() { console.log("Saved user"); });
+  chrome.storage.sync.set(mainObj, function() { console.log("Saved user"); });
+
+  return returnMessage;
 }

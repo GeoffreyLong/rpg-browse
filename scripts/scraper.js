@@ -38,8 +38,8 @@ port.onMessage.addListener(function(msg) {
 // Increase the XP by 50 for the page visit
 (function(increase) {
   chrome.storage.sync.get("user", function(obj) {
-    var newXP = obj["user"]["xp"] + increase;
-    chrome.storage.sync.set({"user": newXP});
+    obj["user"]["xp"] = obj["user"]["xp"] + increase;
+    chrome.storage.sync.set({"user": obj["user"]});
   });
 })(50);
 
@@ -52,11 +52,20 @@ chrome.storage.sync.get("keywords", function(obj) {
   runScraper();
 });
 
+// The button data will be the keyword object that is matched
+var handler = function(e){
+  e.stopPropagation();
+  e.preventDefault();
+  var actionIndex = $(this).attr('id');
+  console.log('Clicked idx ' + actionIndex);
+  port.postMessage(keywords[actionIndex]);
+}
 
 // Run scraper
 // This will match the keywords with the page text
 // Will also create the necessary buttons
 function runScraper() {
+  chrome.storage.sync.clear();
   var t0 = performance.now();
 
   var elms = $('body').find('*:not([href]):not("script")')
@@ -89,10 +98,3 @@ function runScraper() {
 }
 
 
-// The button data will be the keyword object that is matched
-function handler(e){
-  e.stopPropagation();
-  e.preventDefault();
-  var actionIndex = $(this).attr('id');
-  port.postMessage(keywords[actionIndex]);
-}
