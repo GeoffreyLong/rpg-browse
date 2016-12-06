@@ -6,6 +6,17 @@
 // TODO Try to make this async
 //      We want each button to pop up after it has been scraped
 //      Right now they all populate at once after all execution
+//
+//
+//
+//
+// TIMING (Rough Estimates) V1
+//    Wikipedia (Heavy Metals): 15292, 16331, 14801, 16063, 14672 => 15431
+//    Lipsum.com: 788, 1058, 658, 810, 696                        => 802
+// TIMING (Rough Estimates) V2
+//    Wikipedia (Heavy Metals): 507, 641, 520, 599, 565           => 566 
+//    Lipsum.com: 44, 108, 65, 64, 80                             => 72   
+//    
 console.log("Scraper Running");
 var keywords = [];
 var itemStorage = [];
@@ -46,21 +57,35 @@ chrome.storage.sync.get("keywords", function(obj) {
 // This will match the keywords with the page text
 // Will also create the necessary buttons
 function runScraper() {
-  console.log($('body'));
-  
-  var elms = $('body').find('*:not([href]):not("script")').filter(function() {
-    return ($(this).children().length == 0 && $(this).text().split(/\s+/).length > 10);
+  var t0 = performance.now();
+
+  var elms = $('body').find('*:not([href]):not("script")')
+                      // Will filter to be just unbroken text greater than 10 words
+                      .contents().filter(function() {
+                        return (this.nodeType === 3 && $(this).text().split(/\s+/).length > 10);
+                      }).each(function(idx, elm) {
+                        // Gets the value of the filtered text node
+                        // Checks if it contains a keyword
+                        // If it does, then replace the text by accessing the parent element
+                        var textString = elm.nodeValue;
+                        for(var i = 0; i < keywords.length; i++){
+                          if (textString.match(new RegExp(keywords[i].word, 'ig'))) {
+                            try {
+                              textString = textString.replace(new RegExp(keywords[i].word, "ig"),
+                                                    "<button class='dynButton' id='"+i+"'> " 
+                                                    + keywords[i].word + " </button>");
+                              $(elm.parentNode).html($(elm.parentNode).html().replace(elm.nodeValue, textString));
+                            }
+                            catch(err) {}
+                          }
+                        }
   });
-  console.log(elms);
+ 
 
-  for(var i = 0; i < keywords.length; i++){
-    $("body:has(p)").html($("body:has(p)").html().replace(new RegExp(keywords[i].word, "ig"),"<button class='dynButton' id='"+i+"'> " + keywords[i].word + " </button>"));
-    console.log("Ran it " + i);
-
-  }
-
-
-  $(".dynButton").click(handler);
+  // Might be better performance than $('.dynButton').click
+  var time = performance.now() - t0;
+  console.log("TIME: " + time);
+  $('body').on('click', '.dynButton', handler);
 }
 
 
