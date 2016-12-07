@@ -7,6 +7,7 @@
   // TODO TOASTS!!! when there are notifications
   // TODO PAGE POPULATION
   //      Make button dissappear when it's clicked
+  //          Currently disabling it only. Might be more obvious what is happening this way
   //      Make buttons in the same style each time?
   //      Put a delay on the site for certain words... don't want rapid refresh
   //          Should I put the domain with the extension or just the domain?

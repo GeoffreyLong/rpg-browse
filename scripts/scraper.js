@@ -56,6 +56,7 @@ var handler = function(e){
   e.stopPropagation();
   e.preventDefault();
   var actionIndex = $(this).attr('id');
+  $(this).prop('disabled', true);
   console.log('Clicked idx ' + actionIndex);
   port.postMessage(keywords[actionIndex]);
 }
