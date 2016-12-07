@@ -1,0 +1,46 @@
+[{
+  "result": "Sword",
+  "inputs": ["Iron", "Wood"]
+}, {
+  "result": "Gun",
+  "inputs": ["Iron", "Gunpowder"]
+}, {
+  "result": "Iron Armor",
+  "inputs": ["Iron", "Leather Armor"]
+}, {
+  "result": "Bow",
+  "inputs": ["Wood", "String"]
+}, {
+  "result": "Spear",
+  "inputs": ["Stick", "Stone"]
+}, {
+  "result": "Staff",
+  "inputs": ["Stick", "Gem"]
+}, {
+  "result": "Potion",
+  "inputs": ["Herb", "Bottle"]
+}, {
+  "result": "Poison",
+  "inputs": ["Mushroom", "Bottle"]
+}, {
+  "result": "Bomb",
+  "inputs": ["Gunpowder", "Bottle"]
+}, {
+  "result": "Leather Armor",
+  "inputs": ["String", "Leather"]
+}, {
+  "result": "Golden Sword",
+  "inputs": ["Gold", "Sword"]
+}, {
+  "result": "Golden Bow",
+  "inputs": ["Gold", "Bow"]
+}, {
+  "result": "Golden Spear",
+  "inputs": ["Gold", "Spear"]
+}, {
+  "result": "Golden Staff",
+  "inputs": ["Gold", "Staff"]
+}, {
+  "result": "Golden Armor",
+  "inputs": ["Gold", "Iron Armor"]
+}]

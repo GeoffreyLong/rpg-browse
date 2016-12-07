@@ -1,0 +1,175 @@
+[{
+  "name": "Iron",
+  "value": 3,
+  "damage": 0,
+  "isKeyword": true,
+  "icon": "img/iron.png"
+}, {
+  "name": "Wood",
+  "value": 2,
+  "damage": 0,
+  "isKeyword": true,
+  "icon": "img/wood.png"
+}, {
+  "name": "Gunpowder",
+  "value": 5,
+  "damage": 0,
+  "isKeyword": true,
+  "icon": "img/gunpowder.png"
+}, {
+  "name": "Stick",
+  "value": 3,
+  "damage": 3,
+  "isKeyword": true,
+  "icon": "img/stick.png"
+}, {
+  "name": "Stone",
+  "value": 1,
+  "damage": 0,
+  "isKeyword": true,
+  "icon": "img/stone.png"
+}, {
+  "name": "Herb",
+  "value": 2,
+  "damage": 0,
+  "isKeyword": true,
+  "icon": "img/herb.png"
+}, {
+  "name": "Mushroom",
+  "value": 2,
+  "damage": 0,
+  "isKeyword": true,
+  "icon": "img/mushroom.png"
+}, {
+  "name": "Bottle",
+  "value": 3,
+  "damage": 0,
+  "isKeyword": true,
+  "icon": "img/bottle.png"
+}, {
+  "name": "String",
+  "value": 3,
+  "damage": 0,
+  "isKeyword": true,
+  "icon": "img/string.png"
+}, {
+  "name": "Gold",
+  "value": 5,
+  "damage": 0,
+  "isKeyword": true,
+  "icon": "img/gold.png"
+}, {
+  "name": "Gem",
+  "value": 5,
+  "damage": 0,
+  "isKeyword": true,
+  "icon": "img/gem.png"
+}, {
+  "name": "Leather",
+  "value": 3,
+  "damage": 0,
+  "isKeyword": true,
+  "icon": "img/leather.png"
+}, {
+  "name": "Trash",
+  "value": 0,
+  "damage": 0,
+  "isKeyword": true,
+  "icon": "img/trash.png"
+}, {
+  "name": "Sword",
+  "value": 10,
+  "damage": 10,
+  "isKeyword": false,
+  "icon": "img/sword.png"
+}, {
+  "name": "Poison Sword",
+  "value": 15,
+  "damage": 15,
+  "isKeyword": false,
+  "icon": "img/poison_sword.png"
+}, {
+  "name": "Golden Sword",
+  "value": 20,
+  "damage": 20,
+  "isKeyword": false,
+  "icon": "img/golden_sword.png"
+}, {
+  "name": "Bow",
+  "value": 10,
+  "damage": 10,
+  "isKeyword": false,
+  "icon": "img/bow.png"
+}, {
+  "name": "Golden Bow",
+  "value": 20,
+  "damage": 20,
+  "isKeyword": false,
+  "icon": "img/golden_bow.png"
+}, {
+  "name": "Spear",
+  "value": 10,
+  "damage": 10,
+  "isKeyword": false,
+  "icon": "img/spear.png"
+}, {
+  "name": "Golden Spear",
+  "value": 20,
+  "damage": 20,
+  "isKeyword": false,
+  "icon": "img/golden_spear.png"
+}, {
+  "name": "Staff",
+  "value": 10,
+  "damage": 10,
+  "isKeyword": false,
+  "icon": "img/staff.png"
+}, {
+  "name": "Golden Staff",
+  "value": 20,
+  "damage": 20,
+  "isKeyword": false,
+  "icon": "img/golden_spear.png"
+}, {
+  "name": "Gun",
+  "value": 20,
+  "damage": 20,
+  "isKeyword": false,
+  "icon": "img/gun.png"
+}, {
+  "name": "Bomb",
+  "value": 20,
+  "damage": 20,
+  "isKeyword": false,
+  "icon": "img/bomb.png"
+}, {
+  "name": "Potion",
+  "value": 10,
+  "damage": 0,
+  "isKeyword": false,
+  "icon": "img/potion.png"
+}, {
+  "name": "Poison",
+  "value": 10,
+  "damage": 0,
+  "isKeyword": false,
+  "icon": "img/poison.png"
+}, {
+  "name": "Leather Armor",
+  "value": 10,
+  "damage": 0,
+  "isKeyword": false,
+  "icon": "img/leather_armor.png"
+}, {
+  "name": "Iron Armor",
+  "value": 15,
+  "damage": 0,
+  "isKeyword": false,
+  "icon": "img/iron_armor.png"
+}, {
+  "name": "Golden Armor",
+  "value": 20,
+  "damage": 0,
+  "isKeyword": false,
+  "icon": "img/golden_armor.png"
+}]

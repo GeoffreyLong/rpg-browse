@@ -23,6 +23,7 @@ app.controller("myCtrl", function($scope, $q) {
   $scope.packStorage = [];
   $scope.homeStorage = [];
   $scope.GameObjects = [];
+  $scope.combinations = [];
   populateData();
 
 
@@ -41,6 +42,7 @@ app.controller("myCtrl", function($scope, $q) {
     getStorage("packStorage");
     getStorage("homeStorage");
     getStorage("GameObjects");
+    getStorage("combinations");
   }
 
 
@@ -191,25 +193,19 @@ app.controller("myCtrl", function($scope, $q) {
       var elmTwo = $scope.packStorage[indexTwo];
       var newElm = null;
 
-      // Iterate over the game objects to see if the elements exist in a combination
-      // If they do, then save that element (will just be the name)
-      for (var gameObjIdx in $scope.GameObjects) {
-        var gameObj = $scope.GameObjects[gameObjIdx];
-        if (gameObj.name == elmOne.name) {
-          for (var combIdx in gameObj.combinations) {
-            if ((gameObj.combinations[combIdx].inputs[0] == elmOne.name
-                    && gameObj.combinations[combIdx].inputs[1] == elmTwo.name)
-                || (gameObj.combinations[combIdx].inputs[0] == elmTwo.name
-                    && gameObj.combinations[combIdx].inputs[1] == elmOne.name)) {
-              newElm = gameObj.combinations[combIdx].result;
-              console.log("Match Found");
-              break;
-            }
-          }
-        }
+      for (var comboIdx in $scope.combinations) {
+        var combo = $scope.combinations[comboIdx];
 
-        if (newElm != null) break;
+        // There will only be two inputs in an array
+        var inputs = combo.inputs;
+        if ((inputs[0] == elmOne.name && inputs[1] == elmTwo.name)
+            || (inputs[0] == elmTwo.name && inputs[1] == elmOne.name)) {
+          newElm = combo.result;
+          break;
+        }
       }
+
+
 
       // Iterate over the game objects 
       // Populate the trash element and the newElm element
@@ -224,7 +220,6 @@ app.controller("myCtrl", function($scope, $q) {
           newElm.value = gameObj.value;
           newElm.attack = gameObj.attack;
           newElm.icon = gameObj.icon;
-          newElm.combinations = gameObj.combinations
         }
         if (gameObj.name == "Trash") {
           trash = {};
@@ -232,7 +227,6 @@ app.controller("myCtrl", function($scope, $q) {
           trash.value = gameObj.value;
           trash.attack = gameObj.attack;
           trash.icon = gameObj.icon;
-          trash.combinations = gameObj.combinations
         }
       }
 

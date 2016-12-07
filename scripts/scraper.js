@@ -65,7 +65,6 @@ var handler = function(e){
 // This will match the keywords with the page text
 // Will also create the necessary buttons
 function runScraper() {
-  chrome.storage.sync.clear();
   var t0 = performance.now();
 
   var elms = $('body').find('*:not([href]):not("script")')

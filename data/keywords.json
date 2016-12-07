@@ -62,6 +62,24 @@
 	"word": "transfer",
 	"action": "pull"
 }, {
+	"word": "drop",
+	"action": "drop"
+}, {
+	"word": "discard",
+	"action": "drop"
+}, {
+	"word": "toss",
+	"action": "drop"
+}, {
+	"word": "scrap",
+	"action": "drop"
+}, {
+	"word": "combine",
+	"action": "combine"
+}, {
+	"word": "merge",
+	"action": "combine"
+}, {
 	"word": "slime",
 	"action": "attack",
 	"data": {
@@ -96,18 +114,6 @@
 		"health": 200,
 		"attack": 100
 	}
-}, {
-	"word": "drop",
-	"action": "drop"
-}, {
-	"word": "discard",
-	"action": "drop"
-}, {
-	"word": "toss",
-	"action": "drop"
-}, {
-	"word": "scrap",
-	"action": "drop"
 }, {
 	"word": "heal",
 	"action": "heal",

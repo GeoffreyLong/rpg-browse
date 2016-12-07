@@ -29,7 +29,13 @@ chrome.storage.sync.get(null, function(obj) {
     alert("Empty Object Found");
     
     // Create a new obj
-    mainObj.packStorage = [];
+    mainObj.packStorage = [{
+      "name": "Stick",
+      "value": 3,
+      "damage": 3,
+      "isKeyword": true,
+      "icon": "img/stick.png"
+    }];
     mainObj.homeStorage = [];
     mainObj.user.health = 100;
     mainObj.user.maxHealth = 100;
@@ -52,31 +58,42 @@ chrome.storage.sync.get(null, function(obj) {
 
 
 // Populate gameObjs
-$.getJSON("GameObjects.json", function(data) {
+$.getJSON("data/gameobjects.json", function(data) {
   if (data.length > 0) {
     alert("Found game objects");
 
     // Make gameObjs accessible outside fn
     gameObjs = data;
 
-    var gameObjSend = {};
-    gameObjSend["GameObjects"] = data;
-    chrome.storage.sync.set(gameObjSend, function() { console.log("Saved GameObjects"); });
+    chrome.storage.sync.set({"GameObjects": data}, function() { console.log("Saved GameObjects"); });
   }
   else {
     alert("Couldn't read game objects");
   }
 });
 
+// Populate Combinations
+$.getJSON("data/combinations.json", function(data) {
+  if (data.length > 0) {
+    alert("Found combinations");
+
+    // Make combinations accessible outside fn
+    combinations = data;
+
+    chrome.storage.sync.set({"combinations": data}, function() { console.log("Saved GameObjects"); });
+  }
+  else {
+    alert("Couldn't read combinations");
+  }
+});
+
 
 // Populate keywords
-$.getJSON("keywords.json", function(data) {
+$.getJSON("data/keywords.json", function(data) {
   if (data.length > 0) {
     alert("Found keywords");
 
-    keywords = {};
-    keywords["keywords"] = data;
-    chrome.storage.sync.set(keywords, function() { console.log("Saved keywords"); });
+    chrome.storage.sync.set({"keywords": data}, function() { console.log("Saved keywords"); });
   }
   else {
     alert("Couldn't read keywords");
@@ -187,7 +204,13 @@ function fight(data) {
     // Reset the health value
     // Reset the pack storage
     mainObj.user.health = mainObj.user.maxHealth;
-    mainObj.packStorage = [];
+    mainObj.packStorage = [{
+      "name": "Stick",
+      "value": 3,
+      "damage": 3,
+      "isKeyword": true,
+      "icon": "img/stick.png"
+    }];
   }
 
   // Probs don't need to pass this whole thing...
