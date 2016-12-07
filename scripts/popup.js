@@ -1,12 +1,6 @@
 // TODO add populations for 
 //      num page visits, num combos, num items gathered, num fights won
 //      num fights lost, num items dropped
-// TODO Do I have to do the digests since the functions aren't on the scope?
-// TODO Fix the get items function (after fixing the objs)
-// TODO Fix the actual objects for the user...
-//      Want to have user with all the numPulls, xp, etc
-//      Want to have pack and home storage as is
-//      Want to have acheivments (see first todo) also
 // TODO Fix the logic of the storage tags
 
 

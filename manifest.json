@@ -1,10 +1,15 @@
 {
   // TODO Consider changing the game objects and fixed data to managed 
   // TODO Consider using the storage onChange
-  // TODO Consider taking combinations out of the GameObjects data structure
   // TODO Consider using the item name as the key in GameObjects
   // TODO Consider changing the name of GameObjects to items, homeStorage to homeItems,
   //      packStorage to packItems, pull to equip
+  // TODO TOASTS!!! when there are notifications
+  // TODO PAGE POPULATION
+  //      Make button dissappear when it's clicked
+  //      Make buttons in the same style each time?
+  //      Put a delay on the site for certain words... don't want rapid refresh
+  //          Should I put the domain with the extension or just the domain?
   "manifest_version": 2,
 
   "name": "RPGamify Browser",

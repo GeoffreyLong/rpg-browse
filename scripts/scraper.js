@@ -48,7 +48,6 @@ port.onMessage.addListener(function(msg) {
 // Then run the scraper
 chrome.storage.sync.get("keywords", function(obj) {
   keywords = obj["keywords"];
-  console.log(obj);
   runScraper();
 });
 
@@ -67,6 +66,11 @@ var handler = function(e){
 function runScraper() {
   var t0 = performance.now();
 
+  // Clone the keywords object array
+  // Not really necessary since we aren't saving the keywords back to sync 
+  //    and this script will be run anew on each page
+  //    I guess it might be important for the postMessage though
+  var keywordCopy = keywords.slice();
   var elms = $('body').find('*:not([href]):not("script")')
                       // Will filter to be just unbroken text greater than 10 words
                       .contents().filter(function() {
@@ -76,18 +80,22 @@ function runScraper() {
                         // Checks if it contains a keyword
                         // If it does, then replace the text by accessing the parent element
                         var textString = elm.nodeValue;
-                        for(var i = 0; i < keywords.length; i++){
-                          if (textString.match(new RegExp(keywords[i].word, 'ig'))) {
+                        for(var i = 0; i < keywordCopy.length; i++){
+                          if (textString.match(new RegExp(keywordCopy[i].word, 'i'))) {
                             try {
-                              textString = textString.replace(new RegExp(keywords[i].word, "ig"),
+                              textString = textString.replace(new RegExp(keywordCopy[i].word, "i"),
                                                     "<button class='dynButton' id='"+i+"'> " 
-                                                    + keywords[i].word + " </button>");
+                                                    + keywordCopy[i].word + " </button>");
                               $(elm.parentNode).html($(elm.parentNode).html().replace(elm.nodeValue, textString));
+                              keywordCopy.splice(i, 1);
                             }
                             catch(err) {}
                           }
                         }
-  });
+                      });
+  console.log(keywords);
+  console.log(keywordCopy);
+
  
 
   // Might be better performance than $('.dynButton').click
